@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/classify/classify",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "text": "发现",
+        "iconPath": "static/img/发现1.png",
+        "selectedIconPath": "static/img/发现.png",
+        "pagePath": "pages/home/home"
+      },
+      {
+        "text": "分类",
+        "iconPath": "static/img/分类1.png",
+        "selectedIconPath": "static/img/分类.png",
+        "pagePath": "pages/classify/classify"
+      },
+      {
+        "text": "我的",
+        "iconPath": "static/img/我的.png",
+        "selectedIconPath": "static/img/我的1.png",
+        "pagePath": "pages/mine/mine"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

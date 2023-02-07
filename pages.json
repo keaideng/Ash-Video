@@ -1,0 +1,59 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "发现",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	    ,{
+            "path" : "pages/classify/classify",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "分类",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/mine",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"tabBar": {
+		"list": [
+			{
+			"text": "发现",
+			"iconPath": "static/img/发现1.png",
+			"selectedIconPath": "static/img/发现.png",
+			"pagePath": "pages/home/home"
+		},
+		{
+			"text": "分类",
+			"iconPath": "static/img/分类1.png",
+			"selectedIconPath": "static/img/分类.png",
+			"pagePath": "pages/classify/classify"
+		},
+		{
+			"text": "我的",
+			"iconPath": "static/img/我的.png",
+			"selectedIconPath": "static/img/我的1.png",
+			"pagePath": "pages/mine/mine"
+		}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {}
+}
