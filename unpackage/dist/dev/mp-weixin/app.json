@@ -11,6 +11,8 @@
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
+    "color": "#000",
+    "selectedColor": "#FB7299",
     "list": [
       {
         "text": "发现",

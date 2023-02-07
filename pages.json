@@ -27,7 +27,15 @@
             
         }
     ],
+	// // 分支
+	// "subPackages": [ b=C'c'c'c'c'c'c
+	// 	{
+	// 		"root": "branch"
+	// 	}
+	// ],
 	"tabBar": {
+		"color": "#000",
+		"selectedColor": "#FB7299",
 		"list": [
 			{
 			"text": "发现",
