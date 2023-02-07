@@ -1,5 +1,9 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+if (!Math) {
+  Search();
+}
+const Search = () => "../../components/Search/index.js";
 const _sfc_main = {
   __name: "home",
   setup(__props) {
