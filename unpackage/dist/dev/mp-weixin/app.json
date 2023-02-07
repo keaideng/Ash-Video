@@ -4,6 +4,14 @@
     "pages/classify/classify",
     "pages/mine/mine"
   ],
+  "subPackages": [
+    {
+      "root": "branch",
+      "pages": [
+        "SearchPage/SearchPage"
+      ]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",

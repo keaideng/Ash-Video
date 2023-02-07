@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "发现",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "search": "../../components/Search/index"
+  }
 }
