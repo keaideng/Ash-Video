@@ -1,1 +1,1 @@
-<view></view>
+<view class="home"><view class="search-nav"><search u-i="13edb755-0" bind:__l="__l"></search><text>分类</text></view><view class="carousel"><swiper indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" duration="{{1000}}"><swiper-item><image src="/static/img/发现.png" mode=""></image></swiper-item><swiper-item><image src="/static/img/发现1.png" mode=""></image></swiper-item><swiper-item><image src="/static/img/发现.png" mode=""></image></swiper-item></swiper></view><view class="content-bar"><view class=""></view></view></view>

@@ -5,6 +5,7 @@ if (!Math) {
   "./pages/home/home.js";
   "./pages/classify/classify.js";
   "./pages/mine/mine.js";
+  "./branch/SearchPage/SearchPage.js";
 }
 const _sfc_main = {
   onLaunch: function() {

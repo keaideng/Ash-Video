@@ -4,6 +4,14 @@
     "pages/classify/classify",
     "pages/mine/mine"
   ],
+  "subPackages": [
+    {
+      "root": "branch",
+      "pages": [
+        "SearchPage/SearchPage"
+      ]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
@@ -11,6 +19,8 @@
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
+    "color": "#000",
+    "selectedColor": "#FB7299",
     "list": [
       {
         "text": "发现",

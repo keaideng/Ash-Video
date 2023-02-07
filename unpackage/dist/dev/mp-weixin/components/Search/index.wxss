@@ -23,19 +23,23 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.home {
-  padding: 0rpx 20rpx;
-}
-.home .search-nav {
-  display: flex;
-  margin-top: 10rpx;
+.search-nav {
   color: #656771;
 }
-.home .search-nav text {
-  margin: 20rpx 0rpx 0rpx 10rpx;
+.search-nav navigator {
+  width: 620rpx;
+  height: 66rpx;
+  background-color: #f7f7f7;
+  border-radius: 30rpx;
+  line-height: 66rpx;
+  font-size: 26rpx;
 }
-.home .carousel {
-  margin-top: 40rpx;
-  border-radius: 15rpx;
-  background-color: salmon;
+.search-nav navigator icon {
+  position: relative;
+  top: 4rpx;
+  left: 10rpx;
+  margin-right: 10rpx;
+}
+.search-nav text {
+  margin: 10rpx 0rpx 0rpx 10rpx;
 }
