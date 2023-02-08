@@ -6,6 +6,9 @@
 				<icon type="search" size="13"></icon>
 				<text>精彩热搜: 湖南众智学院</text>
 			</navigator>
+			<view class="nav">
+				<slot></slot>
+			</view>
 		</view>
 	</view>
 </template>
@@ -23,9 +26,12 @@
 
 <style lang="scss">
 .search-nav {
+			display: flex;
 			color: #656771;
-
+			
 			navigator {
+				position: relative;
+				flex: 1;
 				width: 620rpx;
 				height: 66rpx;
 				background-color: #f7f7f7;
@@ -34,15 +40,22 @@
 				font-size: 26rpx;
 
 				icon {
-					position: relative;
-					top: 4rpx;
-					left: 10rpx;
+					position: absolute;
+					top: 14rpx;
+					left: 25rpx;
 					margin-right: 10rpx;
 				}
+				text {
+					position: absolute;
+					top: -20rpx;
+					left: 50rpx;
+				}
+			}
+			.nav {
+				position: relative;
+				top: 14rpx;
 			}
 
-			text {
-				margin: 10rpx 0rpx 0rpx 10rpx;
-			}
+			
 		}
 </style>
