@@ -27,7 +27,7 @@
 		"pages": [{
 			"path": "SearchPage/SearchPage",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "搜索",
 				"enablePullDownRefresh": false
 			}
 		}]
