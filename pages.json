@@ -27,10 +27,28 @@
 		"pages": [{
 			"path": "SearchPage/SearchPage",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "搜索",
 				"enablePullDownRefresh": false
 			}
-		}]
+		}    ,{
+                    "path" : "addvideo/addvideo",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "视频列表",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "releasevideo/releasevideo",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "发布作品",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"tabBar": {
 		"color": "#000",
@@ -59,7 +77,10 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"usingComponents": {
+			"Search": "/components/Search/index"
+		}
 	},
 	"uniIdRouter": {}
 }
