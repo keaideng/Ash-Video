@@ -30,7 +30,79 @@
 				"navigationBarTitleText": "搜索",
 				"enablePullDownRefresh": false
 			}
-		}]
+		}    ,{
+                    "path" : "Collection/Collection",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "我的收藏",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "Classify/Classify",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "分类",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "History/History",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "历史记录",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "Login/Login",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "登录页面",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "enroll/enroll",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "注册",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "MyWork/MyWork",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "我的作品",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "Details/Details",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "在线点播",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "modify/modify",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "修改头像",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"tabBar": {
 		"color": "#000",
