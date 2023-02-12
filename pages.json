@@ -30,7 +30,25 @@
 				"navigationBarTitleText": "搜索",
 				"enablePullDownRefresh": false
 			}
-		}]
+		}    ,{
+                    "path" : "addvideo/addvideo",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "视频列表",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "releasevideo/releasevideo",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "发布作品",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"tabBar": {
 		"color": "#000",
