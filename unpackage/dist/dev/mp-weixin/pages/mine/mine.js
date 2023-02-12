@@ -1,6 +1,6 @@
 "use strict";
-const common_vendor = require("../../common/vendor.js");
-const api_modules_login = require("../../api/modules/login.js");
+var common_vendor = require("../../common/vendor.js");
+var api_modules_login = require("../../api/modules/login.js");
 require("../../api/index.js");
 require("../../utils/request.js");
 const _sfc_main = {
@@ -47,6 +47,6 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "C:/\u4E0A\u8BFE\u6587\u4EF6/Class-documents/\u5C0F\u7A0B\u5E8F/\u5C0F\u667A\u89C6\u9891/pages/mine/mine.vue"]]);
+var MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "C:/Users/Administrator/Desktop/applet/pages/mine/mine.vue"]]);
 _sfc_main.__runtimeHooks = 2;
 wx.createPage(MiniProgramPage);

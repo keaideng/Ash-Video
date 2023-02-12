@@ -2,8 +2,10 @@
 	<view class="home">
 			<!-- 添加视频 -->
 			<view class="tjvideo">
-				<view class="imj">
-					<image src="../../static/img/c2c00f0cad1b7043b2054ff7d8b17fd.png"></image>
+				<view class="imj" @click="uploud">
+					<!-- {{ imgUrl }} -->
+					<image :src="state.imgUrl" alt=""></image>
+					<!-- <image src="../../static/img/c2c00f0cad1b7043b2054ff7d8b17fd.png"></image> -->
 				</view>
 					<text>点击添加封面图</text>
 			</view>
@@ -59,8 +61,30 @@
 	import {reactive,toRefs} from 'vue';
 	const state = reactive({
 		array: ['美国', '中国', '巴西', '日本'],
+		imgUrl: '',
 		index: 0
 	})
+	const uploud = () => {
+		console.log(111);
+		wx.chooseMedia({
+			count: 1,
+			type: 'image',
+			success(res) {
+				console.log(res);
+				uni.uploadFile({
+					url: 'http://47.100.96.69:7001/upload/image',
+					header: {authorization: uni.getStorageSync('authorization') },
+					name: 'file',
+					filePath: res.tempFiles[0].tempFilePath,
+					success(res) {
+						console.log(res);
+						const data = JSON.parse(res.data)
+						state.imgUrl = data.url
+					}
+				})
+			}
+		})
+	}
 	// 页面加载
 	onLoad((message) => {
 	
