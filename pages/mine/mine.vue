@@ -5,13 +5,13 @@
 				<image src="../../static/图1.jpg" mode=""></image>
 			</view>
 			
-			<view class="tb1" v-if="state.userList.length">
+			<view class="tb1" v-if="!userInfo.nickname">
 				<view class="tb2" @click="lw">点击登录</view>
 				<view class="tb3">请先登录</view>
 			</view>
 			<view class="tb1" v-else>
-				<view class="tb2">{{ state.userList.nickname }}</view>
-				<view class="tb3">{{ state.userList.signature }}</view>
+				<view class="tb2">{{ userInfo.nickname }}</view>
+				<view class="tb3">{{ userInfo.signature }}</view>
 			</view>
 		</view>
 		<view class="st">
@@ -66,8 +66,7 @@
 import { onShareAppMessage, onLoad, onShow, onHide } from '@dcloudio/uni-app';
 import { getUser } from '../../api/modules/login.js'
 import {reactive,toRefs} from 'vue';
-const state = reactive({
-	userList: {}
+const userInfo = reactive({
 })
 const xg = () => {
 	uni.navigateTo({
@@ -81,7 +80,11 @@ const lw = () => {
 }
 const getUserAdd = async () => {
 	const res= await getUser()
-	state.userList = res.data
+	if(res.statusCode !== 200) {
+		delete userInfo.nickname
+		return 
+	}
+	Object.assign(userInfo, res.data)
 }
 // 页面加载
 onLoad((message) => {
@@ -101,7 +104,6 @@ onHide(() => {
 onShareAppMessage(() => {
 	
 })
-const { userList } = toRefs(state)
 </script>
 
 <style lang="scss">
