@@ -1,86 +1,143 @@
 {
-	"pages": [{
-		"path": "pages/home/home",
-		"style": {
-			"navigationBarTitleText": "发现",
-			"enablePullDownRefresh": false
-		}
-
-	}, {
-		"path": "pages/classify/classify",
-		"style": {
-			"navigationBarTitleText": "分类",
-			"enablePullDownRefresh": false
-		}
-
-	}, {
-		"path": "pages/mine/mine",
-		"style": {
-			"navigationBarTitleText": "我的",
-			"enablePullDownRefresh": false
-		}
-
-	}],
-	// 分支
-	"subPackages": [{
-		"root": "branch",
-		"pages": [{
-			"path": "SearchPage/SearchPage",
-			"style": {
-				"navigationBarTitleText": "搜索",
-				"enablePullDownRefresh": false
-			}
-		}    ,{
-                    "path" : "addvideo/addvideo",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "视频列表",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "releasevideo/releasevideo",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "发布作品",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
-	}],
-	"tabBar": {
-		"color": "#000",
-		"selectedColor": "#FB7299",
-		"list": [{
-				"text": "发现",
-				"iconPath": "static/img/发现1.png",
-				"selectedIconPath": "static/img/发现.png",
-				"pagePath": "pages/home/home"
-			},
-			{
-				"text": "分类",
-				"iconPath": "static/img/分类1.png",
-				"selectedIconPath": "static/img/分类.png",
-				"pagePath": "pages/classify/classify"
-			},
-			{
-				"text": "我的",
-				"iconPath": "static/img/我的.png",
-				"selectedIconPath": "static/img/我的1.png",
-				"pagePath": "pages/mine/mine"
-			}
-		]
-	},
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8",
-		"usingComponents": {
-			"Search": "/components/Search/index"
-		}
-	},
-	"uniIdRouter": {}
+  "pages": [
+    {
+      "path": "pages/home/home",
+      "style": {
+        "navigationBarTitleText": "发现",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/classify/classify",
+      "style": {
+        "navigationBarTitleText": "分类",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "enablePullDownRefresh": false
+      }
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "branch",
+      "pages": [
+        {
+          "path": "SearchPage/SearchPage",
+          "style": {
+            "navigationBarTitleText": "搜索",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "Collection/Collection",
+          "style": {
+            "navigationBarTitleText": "我的收藏",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "addvideo/addvideo",
+          "style": {
+            "navigationBarTitleText": "视频列表",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "releasevideo/releasevideo",
+          "style": {
+            "navigationBarTitleText": "发布作品",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "Classify/Classify",
+          "style": {
+            "navigationBarTitleText": "分类",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "History/History",
+          "style": {
+            "navigationBarTitleText": "历史记录",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "Login/Login",
+          "style": {
+            "navigationBarTitleText": "登录页面",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "enroll/enroll",
+          "style": {
+            "navigationBarTitleText": "注册",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "MyWork/MyWork",
+          "style": {
+            "navigationBarTitleText": "我的作品",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "Details/Details",
+          "style": {
+            "navigationBarTitleText": "在线点播",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "modify/modify",
+          "style": {
+            "navigationBarTitleText": "修改头像",
+            "enablePullDownRefresh": false
+          }
+        }
+      ]
+    }
+  ],
+  "tabBar": {
+    "color": "#000",
+    "selectedColor": "#FB7299",
+    "list": [
+      {
+        "text": "发现",
+        "iconPath": "static/img/发现1.png",
+        "selectedIconPath": "static/img/发现.png",
+        "pagePath": "pages/home/home"
+      },
+      {
+        "text": "分类",
+        "iconPath": "static/img/分类1.png",
+        "selectedIconPath": "static/img/分类.png",
+        "pagePath": "pages/classify/classify"
+      },
+      {
+        "text": "我的",
+        "iconPath": "static/img/我的.png",
+        "selectedIconPath": "static/img/我的1.png",
+        "pagePath": "pages/mine/mine"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8",
+    "usingComponents": {
+      "Search": "/components/Search/index"
+    }
+  },
+  "uniIdRouter": {}
 }

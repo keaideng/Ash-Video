@@ -1,0 +1,23 @@
+{
+  "hash": "d13b2795",
+  "browserHash": "0ebdb222",
+  "optimized": {
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "1d3e0b0d",
+      "needsInterop": false
+    },
+    "axios-miniprogram-adapter": {
+      "src": "../../node_modules/axios-miniprogram-adapter/dist/index.esm.js",
+      "file": "axios-miniprogram-adapter.js",
+      "fileHash": "636cf9af",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-TWLJ45QX": {
+      "file": "chunk-TWLJ45QX.js"
+    }
+  }
+}
