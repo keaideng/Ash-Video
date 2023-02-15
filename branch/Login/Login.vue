@@ -14,7 +14,7 @@
 			</view>
 			<view class="search-nav">
 				<navigator>
-					<input type="text" placeholder="请输入密码" v-model="formList.password" maxlength="16" />
+					<input type="password" placeholder="请输入密码" v-model="formList.password" maxlength="16" />
 				</navigator>
 			</view>
 			<!-- 按钮 -->

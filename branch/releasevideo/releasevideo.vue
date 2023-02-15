@@ -60,9 +60,7 @@
 	import { onShareAppMessage, onLoad, onShow, onHide } from '@dcloudio/uni-app';
 	import {reactive,toRefs} from 'vue';
 	const state = reactive({
-		array: ['美国', '中国', '巴西', '日本'],
 		imgUrl: '',
-		index: 0
 	})
 	const uploud = () => {
 		console.log(111);

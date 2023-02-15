@@ -11,3 +11,6 @@ export const postApi = (data) => http.post('/user/login', data)
 
 // 获取用户信息
 export const getUser = () => http.get('/user/myInfo')
+
+// 修改头像
+export const putRevise = ({avatar}) => http.put('/user/avatar', {avatar})

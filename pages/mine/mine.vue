@@ -2,7 +2,8 @@
 	<view>
 		<view class="tb">
 			<view @click="xg">
-				<image src="../../static/图1.jpg" mode=""></image>
+				<image v-if="!userInfo.avatar" src="../../static/默认头像.png" mode=""></image>
+				<image v-else :src="userInfo.avatar" mode=""></image>
 			</view>
 			
 			<view class="tb1" v-if="!userInfo.nickname">
@@ -55,8 +56,11 @@
 				<image src="../../static/右箭头.png" mode=""></image>
 			</navigator>
 		</view>
-		<view class="pg">
+		<view class="pg" @click="Submission">
 			<button>立即投稿</button>
+		</view>
+		<view class="tuichu" @click="quit">
+			退出登录
 		</view>
 	</view>
 </template>
@@ -86,13 +90,27 @@ const getUserAdd = async () => {
 	}
 	Object.assign(userInfo, res.data)
 }
+
+const quit = () => {
+	userInfo.avatar = ''
+	wx.clearStorage()
+	getUserAdd()
+}
+
+// 投稿
+const Submission = () => {
+	uni.navigateTo({
+		url: '/branch/addvideo/addvideo'
+	})
+}
 // 页面加载
 onLoad((message) => {
+	getUserAdd() 
 })
 
 // 页面显示
 onShow(() => {
-	getUserAdd()
+	getUserAdd() 
 })
 
 // 页面隐藏
@@ -232,5 +250,10 @@ onShareAppMessage(() => {
 		margin-left: 20px;
 		margin-right: 20px;
 	}
+}
+.tuichu {
+	text-align: center;
+	margin-top: 120rpx;
+	color: #A9A5A0;
 }
 </style>
