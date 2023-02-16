@@ -5,32 +5,31 @@
 		<view class="search-nav">
 			<navigator>
 				<icon type="search" size="13"></icon>
-				<!-- <text>精彩热搜: 湖南众智学院</text> -->
-				<input type="text" value="" placeholder="精彩热搜: 湖南众智学院" />
+				<input type="text" placeholder="精彩热搜: 湖南众智学院" v-model="addList.keyWord" />
 			</navigator>
-			<view class="nav">
+			<view class="nav" @click="search">
 				<text>搜索</text>
 			</view>
 		</view>
 	</view>
 	<!-- 内容栏 -->
 	<view class="content">
-		<view class="content-bar">
+		<view class="content-bar" v-for="item in searchList" :key="item.userId">
 			<view class="bar-image">
-				<image src="../../static/图1.jpg" mode=""></image>
+				<image :src="item.cover" mode=""></image>
 			</view>
 			<view class="bar-nr">
-				<view class="nr-li">围殴欧文欸认为偶尔五日哦i恶恶肉i恶恶人iewu哦i恶恶哦i肉i人u而我i入俄我i溽热我i日哦额外</view>
+				<view class="nr-li">{{ item.describe}}</view>
 				<view class="nr-bf">
 					<view class="icon">
 						<view class="icon-li">
 							<view class="li1">
 								<image src="../../static/img/播放.png" mode=""></image>
-								<text>123</text>
+								<text>0</text>
 							</view>
 							<view class="li1">
 								<image src="../../static/img/浏览.png" mode=""></image>
-								<text>11</text>
+								<text>0</text>
 							</view>
 							<view>
 								<image src="../../static/img/Android更多 (1).png" mode=""></image>
@@ -52,12 +51,26 @@
 		onHide
 	} from '@dcloudio/uni-app';
 	import Search from "../../components/Search/index.vue"
+	import { reactive,toRefs } from 'vue'
+	import { SearchApi } from '../../api/modules/categorize'
+	const state = reactive({
+		addList: {
+			keyWord: ''
+		},
+		searchList: {}
+		
+	})
+	
 	// 页面加载
 	onLoad((message) => {
-
+		state.addList.keyWord = message.name
 	})
-
-	// 页面显示
+const search = async () => {
+		const { data } = await SearchApi(state.addList)
+		state.searchList = data.data
+		console.log(state.searchList)
+	}
+	// 页面显                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 	onShow(() => {
 
 	})
@@ -71,6 +84,7 @@
 	onShareAppMessage(() => {
 
 	})
+	const { addList,searchList } = toRefs(state)
 </script>
 
 <style lang="scss">

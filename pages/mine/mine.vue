@@ -60,7 +60,7 @@
 			<button>立即投稿</button>
 		</view>
 		<view class="tuichu" @click="quit">
-			退出登录
+			<text>退出登录</text>
 		</view>
 	</view>
 </template>
@@ -252,8 +252,10 @@ onShareAppMessage(() => {
 	}
 }
 .tuichu {
+	position: absolute;
+	width: 100%;
 	text-align: center;
-	margin-top: 120rpx;
+	bottom: 20rpx;
 	color: #A9A5A0;
 }
 </style>

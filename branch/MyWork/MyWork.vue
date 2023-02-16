@@ -1,12 +1,12 @@
 <template>
 	<!-- 内容栏 -->
-	<view class="content">
+	<view class="content" v-for="item in WorkList" :key="item.videoId">
 		<view class="content-bar">
 			<view class="bar-image">
-				<image src="../../static/图1.jpg" mode=""></image>
+				<image :src="item.cover" mode=""></image>
 			</view>
 			<view class="bar-nr">
-				<view class="nr-li">围殴欧文欸认为偶尔五日哦i恶恶肉i恶恶人iewu哦i恶恶哦i肉i人u而我i入俄我i溽热我i日哦额外</view>
+				<view class="nr-li">{{ item.title }}</view>
 				<view class="nr-bf">
 					<view class="icon">
 						<view class="icon-li">
@@ -27,7 +27,7 @@
 			</view>
 		</view>
 		<view class="bar-cz">
-			<view class="">修改</view>
+			<view class="" @click="revise(item.videoId)">修改</view>
 			<view class="">视频</view>
 			<view class="">删除</view>
 		</view>
@@ -36,23 +36,34 @@
 
 <script setup>
 	// vue3小程序生命周期函数
+	import { reactive,toRefs } from 'vue'
 	import {
 		onShareAppMessage,
 		onLoad,
 		onShow,
 		onHide
 	} from '@dcloudio/uni-app';
-
+	import { getWorkApi } from '../../api/modules/login'
+	const WorkList = reactive({
+		
+	})
 	// 页面加载
 	onLoad((message) => {
-
+	getWork()
 	})
-
+	const getWork = async() => {
+		const { data } = await getWorkApi()
+		Object.assign(WorkList,data.data)
+	}
 	// 页面显示
 	onShow(() => {
-
+	getWork()
 	})
-
+	const revise = (videoId) => {
+		uni.navigateTo({
+			url: '/branch/addvideo/addvideo?videoId= '+ videoId +''
+		})
+	}
 	// 页面隐藏
 	onHide(() => {
 

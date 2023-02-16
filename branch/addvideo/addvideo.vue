@@ -6,9 +6,9 @@
 				<view class="imj" @click="UploadCover">
 					<image v-if="!addList.cover" src="../../static/img/c2c00f0cad1b7043b2054ff7d8b17fd.png"
 						class="image1"></image>
-					<image v-else :src="addList.cover" alt="" class="image"></image>
+					<image v-else :src="imaUrl" alt="" class="image"></image>
 				</view>
-				<text>点击添加封面图</text>
+				<text>{{ !addList.videoId ? '点击添加封面' : '点击修改封面'}}</text>
 			</view>
 			<!-- 标题 | 描述 -->
 			<view class="label_describe">
@@ -76,12 +76,13 @@
 		toRefs
 	} from 'vue';
 	import {
-		UploadVideo
+		UploadVideo,UploadImage
 	} from '../../utils/upload';
 	import {
-		putRevise
+		putRevise,
+		reviseApi
 	} from '../../api/modules/login.js'
-	import { cationApi, submitApi } from '../../api/modules/categorize'
+	import { cationApi, submitApi,revisePut } from '../../api/modules/categorize'
 	const state = reactive({
 		addList: {
 			cover: '',
@@ -91,60 +92,95 @@
 			classify: ''
 		},
 		array: [],
+		Video:'',
+		imaUrl: '',
 		sum: "",
 		ma: '',
 		ba: '',
+		videoId: ''
 	})
+	// 封装校验
+	const encapsulation = () => {
+		const { cover,videoUrl,title,describe,classify } = state.addList
+		if (!cover) {
+			return uni.showToast({
+				title: '封面不能为空',
+				icon: 'none'
+			})
+		}else if (!title) {
+			return uni.showToast({
+				title: '标题不能小于五，大于64',
+				icon: 'none'
+			})
+		} else if(!describe) {
+			return uni.showToast({
+				title: '描述不能小于五，大于255',
+				icon: 'none'
+			})
+		} else if (!classify) {
+			return uni.showToast({
+				title: '分类不能为空',
+				icon: 'none'
+			})
+		} else if(!videoUrl) {
+			return uni.showToast({
+				title: '视频不能为空',
+				icon: 'none'
+			})
+		}
+	}
 	// 页面加载
 	const upload = new UploadVideo()
+	const image = new UploadImage()
 	upload.onUpdate = (e) => {
 		state.sum = e
 	}
 	onLoad(async (message) => {
-		const res = await cationApi()
-		state.array = res.data.data
+		const { data } = await reviseApi(message.videoId)
+		const res = data.data
+		state.addList = res
+		state.imaUrl = res.coverPreview
+		fz(res.videoUrl)
+		const sum = await cationApi()
+		state.array = sum.data.data
 	})
+	
 	// 上传封面
-	const UploadCover = () => {
-		console.log(111);
-		wx.chooseMedia({
-			count: 1,
-			type: 'image',
-			success(res) {
-				console.log(res);
-				uni.uploadFile({
-					url: 'http://47.100.96.69:7001/upload/image',
-					header: {
-						authorization: uni.getStorageSync('authorization')
-					},
-					name: 'file',
-					filePath: res.tempFiles[0].tempFilePath,
-					success(res) {
-						console.log(res);
-						const data = JSON.parse(res.data)
-						state.addList.cover = data.url
-					}
-				})
-			}
-		})
+	const UploadCover = async () => {
+		await image.open()
+		const {path, url } = await image.upload()
+		state.addList.cover = path
+		state.imaUrl = url
 	}
-	// 上传图片
+	// 提交视频
 	const avatar = async () => {
-		await submitApi(state.addList)
-		uni.switchTab({ url: '/pages/mine/mine' })
+		encapsulation()
+		if ( !addList.videoId ) {
+			await submitApi(state.addList)
+		} else {
+			await revisePut(addList.videoId)
+		}
+				uni.switchTab({ url: '/pages/mine/mine' })
+				return uni.showToast({ title: '上传成功', icon: 'none'})
+				state.addList = {}
+	}
+	const fz = (i) => {
+		state.Video =i.slice(11)
+		state.ma = state.Video.slice(-8)
+		state.ba = state.Video.slice(0, -8)
 	}
 	// null ing ed
 	const zt = ref('null')
-	// 打开文件 
+	// 上传视频 
 	const uploud = async () => {
-		const path = await upload.open()
+		await upload.open()
 		zt.value = 'ing'
-		state.addList.videoUrl = upload.filePath.slice(11)
-		state.ma = state.addList.videoUrl.slice(-8)
-		state.ba = state.addList.videoUrl.slice(0, -8)
+		fz(upload.filePath)
 		const {
-			url
+			url,
+			path
 		} = await upload.upload()
+		state.addList.videoUrl = path
 		zt.value = 'ed'
 	}
 
@@ -185,7 +221,9 @@
 		addList,
 		selectDatas,
 		array,
-		index
+		imaUrl,
+		Video,
+		videoId
 	} = toRefs(state)
 </script>
 
@@ -259,7 +297,6 @@
 					}
 				}
 				.bel {
-					flex: 1;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					font-size: 30rpx;
@@ -269,6 +306,7 @@
 					margin-right: 20rpx;
 					margin-left: 20rpx;
 					font-size: 40rpx;
+					    flex-shrink: 0;
 				}
 
 				.ab {

@@ -3,96 +3,18 @@
 		<view class="search-nav">
 			<Search></Search>
 		</view>
-	<!-- 热门分类 -->
-	<view class="cation">
-			<view class="cation-item">
-				<text>热门分类</text>
-			</view>
-			<view class="classify">
-				<view class="l">
-					<view>
-						<image src='../../static/logo.png'></image>
-					</view>
-					<text>分类</text>
-				</view>
-				<view class="l">
-					<view>
-						<image src='../../static/logo.png'></image>
-					</view>
-					<text>分类</text>
-				</view>
-				<view class="l">
-					<view>
-						<image src='../../static/logo.png'></image>
-					</view>
-					<text>分类</text>
-				</view>
-				<view class="l">
-					<view>
-						<image src='../../static/logo.png'></image>
-					</view>
-					<text>分类</text>
-				</view>
-			</view>
-		</view>
 	</view>
-	<!-- 中间线 -->
-	<view class="qqq"></view>
 	<!-- 全部分类 -->
 	<view class="allsort">
 		<view class="sort">
 			<text>全部分类</text>
 		</view>
-		<view class="qb">
-			<view class="qb_item">
+		<view class="qb" >
+			<view class="qb_item" v-for="item,index in addList" :key="index" @click="lw(item.name)">
 				<view>
-					<image src='../../static/logo.png'></image>
+					<image :src='item.icon'></image>
 				</view>
-				<text>分类</text>
-			</view>
-			<view class="qb_item">
-				<view>
-					<image src='../../static/logo.png'></image>
-				</view>
-				<text>分类</text>
-			</view>
-			<view class="qb_item">
-				<view>
-					<image src='../../static/logo.png'></image>
-				</view>
-				<text>分类</text>
-			</view>
-			<view class="qb_item">
-				<view>
-					<image src='../../static/logo.png'></image>
-				</view>
-				<text>分类</text>
-			</view>
-		</view>
-		<view class="bq">
-			<view class="bq_item">
-				<view>
-					<image src='../../static/logo.png'></image>
-				</view>
-				<text>分类</text>
-			</view>
-			<view class="bq_item">
-				<view>
-					<image src='../../static/logo.png'></image>
-				</view>
-				<text>分类</text>
-			</view>
-			<view class="bq_item">
-				<view>
-					<image src='../../static/logo.png'></image>
-				</view>
-				<text>分类</text>
-			</view>
-			<view class="bq_item">
-				<view>
-					<image src='../../static/logo.png'></image>
-				</view>
-				<text>分类</text>
+				<text>{{ item.name }}</text>
 			</view>
 		</view>
 	</view>
@@ -107,10 +29,20 @@
 		onHide
 	} from '@dcloudio/uni-app';
 	import Search from "../../components/Search/index.vue"
-
+	import { reactive,toRefs } from 'vue'
+	import { cationApi } from '../../api/modules/categorize'
+	const state = reactive({
+		addList: {}
+	})
+	const lw = (name) => {
+		uni.navigateTo({
+			url: '/branch/SearchPage/SearchPage?name= '+ name +''
+		})
+	}
 	// 页面加载
-	onLoad((message) => {
-
+	onLoad( async(message) => {
+		const { data } = await cationApi()
+		state.addList = data.data
 	})
 
 	// 页面显示
@@ -127,7 +59,8 @@
 	onShareAppMessage(() => {
 
 	})
-</script>
+	const { addList } = toRefs(state)
+</script> 
 
 <style lang="scss">
 	.home {
@@ -142,53 +75,7 @@
 			margin: 20rpx 0rpx 0rpx 10rpx;
 		}
 	}
-	.cation {
-		margin-top: 40rpx;
-		height: 300rpx;
-
-		.cation-item {
-			height: 40rpx;
-			padding: 0rpx 14rpx;
-			text {
-				font-weight: bold;
-				font-size: 40rpx;
-			}
-		}
-	}
-	.classify {
-		width: 650rpx;
-		height: 180rpx;
-		display: flex;
-		justify-items: center;
-		margin-top: 36rpx;
-
-		.l {
-			width: 100rpx;
-			height: 100rpx;
-			line-height: 80rpx;
-			margin: 42rpx;
-			margin-right: 37rpx;
-			image {
-				width: 100rpx;
-				height: 100rpx;	
-				// margin-right: 54rpx;
-				margin-bottom: -30rpx;
-			}
-			text {
-				font-size: 38rpx;
-				color: #656771;
-				margin-left: 10rpx;
-			}
-		}
-	}
-	.qqq {
-		width: 800rpx;
-		height: 20rpx;
-		background-color: #F7F7F7;
-	}
 	.allsort {
-		width: 750rpx;
-		height: 615rpx;
 		.sort {
 			width: 100%;
 			height: 70rpx;
@@ -202,21 +89,21 @@
 		.qb {
 			width: 100%;
 			// height: 272rpx;
-			height: 225rpx;
-			margin-left: 54rpx;
+			// height: 225rpx;
 			margin-top: 10px;
 			display: flex;
+			flex-wrap: wrap;
+			text-align: center;
 			.qb_item {
-				width: 160rpx;
-				height: 267rpx;
+				width: 170rpx;
+				height: 200rpx;
 				margin: 9rpx;
 				image {
 					width: 100rpx;
 					height: 100rpx;	
-					margin-right: 54rpx;
 				}
 				text {
-					font-size: 38rpx;
+					font-size: 32rpx;
 					color: #656771;
 					margin-left: 10rpx;
 				}
