@@ -1,5 +1,8 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const api_modules_login = require("../../api/modules/login.js");
+require("../../api/index.js");
+require("../../utils/request.js");
 if (!Math) {
   Search();
 }
@@ -7,16 +10,33 @@ const Search = () => "../../components/Search/index.js";
 const _sfc_main = {
   __name: "home",
   setup(__props) {
-    common_vendor.onLoad((message) => {
+    const state = common_vendor.reactive({
+      ImageList: []
     });
+    common_vendor.onLoad((message) => {
+      carousel();
+    });
+    const carousel = async () => {
+      const { data } = await api_modules_login.carouselApi();
+      state.ImageList = data.data;
+      console.log(state.ImageList);
+    };
     common_vendor.onShow(() => {
     });
     common_vendor.onHide(() => {
     });
     common_vendor.onShareAppMessage(() => {
     });
+    const { ImageList } = common_vendor.toRefs(state);
     return (_ctx, _cache) => {
-      return {};
+      return {
+        a: common_vendor.f(common_vendor.unref(ImageList), (item, k0, i0) => {
+          return {
+            a: item.imagePreview,
+            b: item.id
+          };
+        })
+      };
     };
   }
 };

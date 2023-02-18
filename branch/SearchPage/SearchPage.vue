@@ -14,31 +14,36 @@
 	</view>
 	<!-- 内容栏 -->
 	<view class="content">
-		<view class="content-bar" v-for="item in searchList" :key="item.userId">
-			<view class="bar-image">
-				<image :src="item.cover" mode=""></image>
-			</view>
-			<view class="bar-nr">
-				<view class="nr-li">{{ item.describe}}</view>
-				<view class="nr-bf">
-					<view class="icon">
-						<view class="icon-li">
-							<view class="li1">
-								<image src="../../static/img/播放.png" mode=""></image>
-								<text>0</text>
-							</view>
-							<view class="li1">
-								<image src="../../static/img/浏览.png" mode=""></image>
-								<text>0</text>
-							</view>
-							<view>
-								<image src="../../static/img/Android更多 (1).png" mode=""></image>
+		<view v-if="searchList.length">
+			<view class="content-bar" v-for="item in searchList" :key="item.userId" >
+				<view class="bar-image">
+					<image :src="item.cover" mode=""></image>
+				</view>
+				<view class="bar-nr">
+					<view class="nr-li">{{ item.describe}}</view>
+					<view class="nr-bf">
+						<view class="icon">
+							<view class="icon-li">
+								<view class="li1">
+									<image src="../../static/img/播放.png" mode=""></image>
+									<text>0</text>
+								</view>
+								<view class="li1">
+									<image src="../../static/img/浏览.png" mode=""></image>
+									<text>0</text>
+								</view>
+								<view>
+									<image src="../../static/img/Android更多 (1).png" mode=""></image>
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+
+		<!-- 暂无内容 -->
+		<view v-else class="zwnr">暂无内容</view>
 	</view>
 </template>
 
@@ -51,22 +56,29 @@
 		onHide
 	} from '@dcloudio/uni-app';
 	import Search from "../../components/Search/index.vue"
-	import { reactive,toRefs } from 'vue'
-	import { SearchApi } from '../../api/modules/categorize'
+	import {
+		reactive,
+		toRefs
+	} from 'vue'
+	import {
+		SearchApi
+	} from '../../api/modules/categorize'
 	const state = reactive({
 		addList: {
 			keyWord: ''
 		},
-		searchList: {}
-		
+		searchList: []
+
 	})
-	
+
 	// 页面加载
 	onLoad((message) => {
 		state.addList.keyWord = message.name
 	})
-const search = async () => {
-		const { data } = await SearchApi(state.addList)
+	const search = async () => {
+		const {
+			data
+		} = await SearchApi(state.addList)
 		state.searchList = data.data
 		console.log(state.searchList)
 	}
@@ -84,7 +96,10 @@ const search = async () => {
 	onShareAppMessage(() => {
 
 	})
-	const { addList,searchList } = toRefs(state)
+	const {
+		addList,
+		searchList
+	} = toRefs(state)
 </script>
 
 <style lang="scss">
@@ -96,6 +111,7 @@ const search = async () => {
 		.search-nav {
 			display: flex;
 			color: #656771;
+
 			navigator {
 				position: relative;
 				flex: 1;
@@ -105,24 +121,26 @@ const search = async () => {
 				border-radius: 30rpx;
 				line-height: 66rpx;
 				font-size: 26rpx;
-			
+
 				icon {
 					position: absolute;
 					top: 14rpx;
 					left: 25rpx;
 					margin-right: 10rpx;
 				}
+
 				input {
 					position: absolute;
 					top: 12rpx;
 					left: 60rpx;
 				}
 			}
+
 			.nav {
 				position: relative;
 				top: 14rpx;
 			}
-			
+
 		}
 	}
 
@@ -139,23 +157,29 @@ const search = async () => {
 
 			.bar-image {
 				width: 300rpx;
-				height: 100%;
+				height: 169rpx;
 				border-radius: 25rpx;
 				overflow: hidden;
+				image {
+					width: 100%;
+					height: 100%;
+				}
 			}
 
 			.bar-nr {
 				position: relative;
 				flex: 1;
 				margin-left: 20rpx;
+
 				.nr-li {
-					overflow: hidden;					
+					overflow: hidden;
 					height: 80rpx;
 					text-overflow: ellipsis;
 					-webkit-line-clamp: 2;
 					display: -webkit-box;
 					-webkit-box-orient: vertical;
 				}
+
 				.nr-bf {
 					position: absolute;
 					bottom: 0;
@@ -192,6 +216,10 @@ const search = async () => {
 					}
 				}
 			}
+		}
+		.zwnr {
+			text-align: center;
+			margin-top: 200rpx;
 		}
 	}
 </style>

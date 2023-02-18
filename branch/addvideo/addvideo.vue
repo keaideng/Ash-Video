@@ -136,11 +136,13 @@
 		state.sum = e
 	}
 	onLoad(async (message) => {
-		const { data } = await reviseApi(message.videoId)
-		const res = data.data
-		state.addList = res
-		state.imaUrl = res.coverPreview
-		fz(res.videoUrl)
+		if (message.videoId) {
+			const { data } = await reviseApi(message.videoId)
+			const res = data.data
+			state.addList = res
+			state.imaUrl = res.coverPreview
+			fz(res.videoUrl)
+		}
 		const sum = await cationApi()
 		state.array = sum.data.data
 	})
@@ -259,8 +261,8 @@
 				}
 
 				.image {
-					width: 420rpx;
-					height: 100%;
+					width: 100%;
+					height: 422rpx;
 				}
 
 				.image1 {

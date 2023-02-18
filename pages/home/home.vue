@@ -8,15 +8,9 @@
 		</view>
 		<!-- 轮播图 -->
 		<view class="carousel">
-			<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" >
-				<swiper-item>
-					<image src="../../static/img/发现.png" mode=""></image>
-				</swiper-item>
-				<swiper-item>
-					<image src="../../static/img/发现1.png" mode=""></image>
-				</swiper-item>
-				<swiper-item>
-					<image src="../../static/img/发现.png" mode=""></image>
+			<swiper style="height: 422rpx;" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" >
+				<swiper-item v-for="item in ImageList" :key="item.id">
+					<image :src="item.imagePreview"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -122,11 +116,21 @@
 		onHide
 	} from '@dcloudio/uni-app';
 	import Search from "../../components/Search/index.vue"
+	import { carouselApi } from '../../api/modules/login'
+	import { reactive,toRefs } from 'vue'
+	const state = reactive({
+		ImageList: []
+	})
 	// 页面加载
 	onLoad((message) => {
-
+		carousel()
 	})
-
+	// 轮播图
+	const carousel = async () => {
+		const { data } = await carouselApi()
+		state.ImageList = data.data
+		console.log(state.ImageList)
+	}
 	// 页面显示
 	onShow(() => {
 
@@ -141,6 +145,7 @@
 	onShareAppMessage(() => {
 
 	})
+	const { ImageList } = toRefs(state)
 </script>
 
 <style lang="scss">
@@ -161,7 +166,10 @@
 		.carousel {
 			margin-top: 40rpx;
 			border-radius: 15rpx;
-			background-color: salmon;
+			image {
+				width: 100%;
+				height: 100%;
+			}
 		}
 		.wx-swiper-dots {
 			left: unset !important;

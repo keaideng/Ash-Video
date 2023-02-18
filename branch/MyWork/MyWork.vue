@@ -1,7 +1,7 @@
 <template>
 	<!-- 内容栏 -->
 	<view class="content" v-for="item in WorkList" :key="item.videoId">
-		<view class="content-bar">
+		<view class="content-bar" @click="videoDetails(item.videoId, item.state)" >
 			<view class="bar-image">
 				<image :src="item.cover" mode=""></image>
 			</view>
@@ -28,7 +28,7 @@
 		</view>
 		<view class="bar-cz">
 			<view class="" @click="revise(item.videoId)">修改</view>
-			<view class="">视频</view>
+			<view class="">{{ item.state == 1 ? '审核中' : '视频' }}</view>
 			<view class="">删除</view>
 		</view>
 	</view>
@@ -36,32 +36,45 @@
 
 <script setup>
 	// vue3小程序生命周期函数
-	import { reactive,toRefs } from 'vue'
+	import {
+		reactive,
+		toRefs
+	} from 'vue'
 	import {
 		onShareAppMessage,
 		onLoad,
 		onShow,
 		onHide
 	} from '@dcloudio/uni-app';
-	import { getWorkApi } from '../../api/modules/login'
+	import {
+		getWorkApi
+	} from '../../api/modules/login'
 	const WorkList = reactive({
-		
+
 	})
 	// 页面加载
 	onLoad((message) => {
-	getWork()
+		getWork()
 	})
-	const getWork = async() => {
-		const { data } = await getWorkApi()
-		Object.assign(WorkList,data.data)
+	const getWork = async () => {
+		const {
+			data
+		} = await getWorkApi()
+		Object.assign(WorkList, data.data)
 	}
 	// 页面显示
 	onShow(() => {
-	getWork()
+		getWork()
 	})
 	const revise = (videoId) => {
 		uni.navigateTo({
-			url: '/branch/addvideo/addvideo?videoId= '+ videoId +''
+			url: '/branch/addvideo/addvideo?videoId=' + videoId + ''
+		})
+	}
+	const videoDetails = (videoId, state) => {
+		if (state == 1) return
+		uni.navigateTo({
+			url: '/branch/Details/Details?videoId=' + videoId + ''
 		})
 	}
 	// 页面隐藏
@@ -91,6 +104,10 @@
 				height: 100%;
 				border-radius: 25rpx;
 				overflow: hidden;
+				image {
+					width: 320rpx;
+					height: 180rpx;
+				}
 			}
 
 			.bar-nr {
@@ -151,6 +168,7 @@
 			border-bottom: 10px solid #f5f5f4;
 			display: flex;
 			line-height: 100rpx;
+
 			view {
 				flex: 1;
 				text-align: center;

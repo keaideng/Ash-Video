@@ -255,7 +255,7 @@ onShareAppMessage(() => {
 	position: absolute;
 	width: 100%;
 	text-align: center;
-	bottom: 20rpx;
+	bottom: 50rpx;
 	color: #A9A5A0;
 }
 </style>
