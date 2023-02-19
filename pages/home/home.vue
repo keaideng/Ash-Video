@@ -22,82 +22,22 @@
 			</view>
 			<!-- 推荐视频 -->
 			<view class="content-Video">
-				<view class="Video">
+				<view class="Video" v-for="item in addList" :key="item.userId">
 					<view class="Video-image">
-						<image src="../../static/图1.jpg" mode=""></image>
+						<image :src="item.cover" mode="" @click="tzsp(item.videoId)"></image>
 						<view class="icon">
 							<view class="icon-li">
 							<image src="../../static/img/播放.png" mode=""></image>
-							<text>123</text>
+							<text>{{ item.readCount }}</text>
 							<image src="../../static/img/Icon - 观看量.png" mode=""></image>
-							<text>11</text>
+							<text>{{ item.readCount }}</text>
 							</view>
 						</view>
 					</view>
 					<view class="Video-nr">
-						<text>小番茄</text>
+						<text>{{ item.title }}</text>
 						<view class="nr-icon">
-							<text>风景</text>
-							<image src="../../static/img/Android更多.png" mode=""></image>
-						</view>
-					</view>
-				</view>
-				<view class="Video">
-					<view class="Video-image">
-						<image src="../../static/图1.jpg" mode=""></image>
-						<view class="icon">
-							<view class="icon-li">
-							<image src="../../static/img/播放.png" mode=""></image>
-							<text>123</text>
-							<image src="../../static/img/Icon - 观看量.png" mode=""></image>
-							<text>11</text>
-							</view>
-						</view>
-					</view>
-					<view class="Video-nr">
-						<text>小番茄</text>
-						<view class="nr-icon">
-							<text>风景</text>
-							<image src="../../static/img/Android更多.png" mode=""></image>
-						</view>
-					</view>
-				</view>
-				<view class="Video">
-					<view class="Video-image">
-						<image src="../../static/图1.jpg" mode=""></image>
-						<view class="icon">
-							<view class="icon-li">
-							<image src="../../static/img/播放.png" mode=""></image>
-							<text>123</text>
-							<image src="../../static/img/Icon - 观看量.png" mode=""></image>
-							<text>11</text>
-							</view>
-						</view>
-					</view>
-					<view class="Video-nr">
-						<text>小番茄</text>
-						<view class="nr-icon">
-							<text>风景</text>
-							<image src="../../static/img/Android更多.png" mode=""></image>
-						</view>
-					</view>
-				</view>
-				<view class="Video">
-					<view class="Video-image">
-						<image src="../../static/图1.jpg" mode=""></image>
-						<view class="icon">
-							<view class="icon-li">
-							<image src="../../static/img/播放.png" mode=""></image>
-							<text>123</text>
-							<image src="../../static/img/Icon - 观看量.png" mode=""></image>
-							<text>11</text>
-							</view>
-						</view>
-					</view>
-					<view class="Video-nr">
-						<text>小番茄我围殴欧文日围殴日俄我欸人胃容物</text>
-						<view class="nr-icon">
-							<text>风景</text>
+							<text>{{ item.classify }}</text>
 							<image src="../../static/img/Android更多.png" mode=""></image>
 						</view>
 					</view>
@@ -116,20 +56,36 @@
 		onHide
 	} from '@dcloudio/uni-app';
 	import Search from "../../components/Search/index.vue"
-	import { carouselApi } from '../../api/modules/login'
+	import { carouselApi,getFetchApi } from '../../api/modules/login'
 	import { reactive,toRefs } from 'vue'
 	const state = reactive({
-		ImageList: []
+		ImageList: [],
+		addList: [],
+		page: {
+			pageNumber: 1,
+			pageSize: 10
+		},
 	})
 	// 页面加载
 	onLoad((message) => {
 		carousel()
+		Video()
 	})
 	// 轮播图
 	const carousel = async () => {
 		const { data } = await carouselApi()
 		state.ImageList = data.data
-		console.log(state.ImageList)
+	}
+	// 获取视频
+	const Video = async () => {
+		const { data } = await getFetchApi(state.page)
+		state.addList = data
+		console.log(data)
+	}
+	const tzsp = (videoId) => {
+		uni.navigateTo({
+			url: '/branch/Details/Details?videoId=' + videoId + ''
+		})
 	}
 	// 页面显示
 	onShow(() => {
@@ -145,7 +101,7 @@
 	onShareAppMessage(() => {
 
 	})
-	const { ImageList } = toRefs(state)
+	const { ImageList, addList } = toRefs(state)
 </script>
 
 <style lang="scss">

@@ -22,7 +22,7 @@
 					<view class="yh-bf">
 						<view class="bf-sl">
 							<image src="../../static/视频.png" mode=""></image>
-							<text>0</text>
+							<text>{{ demandList.readCount }}</text>
 							<image src="../../static/img/播放.png" mode=""></image>
 							<text>0</text>
 						</view>
@@ -47,7 +47,7 @@
 				</view>
 				<view class="pl-reply" v-for="item,index in appList" :key="item.commentId">
 					<view class="reply-tx">
-						<image src="../../static/图1.jpg" mode=""></image>
+						<image :src="item.user.avatar" mode=""></image>
 					</view>
 					<view class="reply-hf">
 						<view class="hf-mz">{{item.user.nickname}}</view>
@@ -66,7 +66,7 @@
 								<view class="rp1">UP主觉得很赞</view>
 							</view>
 						</view>
-						<view class="hf-ments">
+						<view class="hf-ments" v-if="item.topReply">
 							<view class="ments" v-if="item.topReply && !item.moreShow">
 								<text class="ments-zm">{{ item.user.nickname }}</text>
 								<text>:</text>
@@ -82,7 +82,7 @@
 								</view>
 							</view>
 							
-							<view class="more" @click="dianMore(item)">
+							<view class="more" @click="dianMore(item)" v-if="item.topReply">
 								<txte>更多</txte>
 							</view>
 						</view>
@@ -112,7 +112,7 @@
 		toRefs
 	} from 'vue';
 	const state = reactive({
-		show: false,
+		show: true,
 		sum: false,
 		demandList: {},
 		text: '',
@@ -138,7 +138,6 @@
 			videoId
 		})
 		state.demandList = data.data
-		console.log(data)
 		Onlinedemand(message.videoId)
 	})
 	// 获取回复评论
@@ -157,7 +156,6 @@
 			videoId
 		})
 		state.appList = data.data
-		console.log(data)
 	}
 	// 发布回复评论
 	const Replycomments = (replyId) => {
@@ -182,7 +180,6 @@
 		item.moreShow = true
 		const { data } = await getReply({commentId: item.commentId})
 		item.moreList = data.data
-		console.log(state.moreList)
 	}
 	// 发布评论
 	const publish = async (videoId) => {

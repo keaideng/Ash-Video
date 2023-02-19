@@ -24,6 +24,7 @@ const _sfc_main = {
         return;
       }
       Object.assign(userInfo, res.data);
+      console.log(userInfo);
     };
     const quit = () => {
       userInfo.avatar = "";
@@ -36,10 +37,11 @@ const _sfc_main = {
       });
     };
     common_vendor.onLoad((message) => {
-      getUserAdd();
     });
     common_vendor.onShow(() => {
-      getUserAdd();
+      if (common_vendor.index.getStorageSync("authorization")) {
+        getUserAdd();
+      }
     });
     common_vendor.onHide(() => {
     });
@@ -59,8 +61,9 @@ const _sfc_main = {
         f: common_vendor.t(userInfo.nickname),
         g: common_vendor.t(userInfo.signature)
       }, {
-        h: common_vendor.o(Submission),
-        i: common_vendor.o(quit)
+        h: common_vendor.t(userInfo.videoCount),
+        i: common_vendor.o(Submission),
+        j: common_vendor.o(quit)
       });
     };
   }

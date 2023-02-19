@@ -21,7 +21,7 @@
 					<image src="../../static/视频.png" mode=""></image>
 					<text>我的作品</text>
 				</view>
-				<text>0个</text>
+				<text>{{userInfo.videoCount}}个</text>
 			</navigator>
 			<navigator class="st-item1" url="../../branch/Collection/Collection">
 				<view>
@@ -89,6 +89,7 @@ const getUserAdd = async () => {
 		return 
 	}
 	Object.assign(userInfo, res.data)
+	console.log(userInfo)
 }
 
 const quit = () => {
@@ -105,12 +106,14 @@ const Submission = () => {
 }
 // 页面加载
 onLoad((message) => {
-	getUserAdd() 
+	
 })
 
 // 页面显示
 onShow(() => {
-	getUserAdd() 
+	if(uni.getStorageSync('authorization')) {
+		getUserAdd()
+	}
 })
 
 // 页面隐藏

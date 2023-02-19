@@ -23,3 +23,6 @@ export const reviseApi = (videoId) => http.get('/user/video/fromId', videoId)
 
 // 获取轮播图
 export const carouselApi = () => http.get('/carousel')
+
+// 获取首页信息
+export const getFetchApi = (data) => http.get('/video/home',data)

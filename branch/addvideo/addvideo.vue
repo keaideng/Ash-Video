@@ -76,13 +76,18 @@
 		toRefs
 	} from 'vue';
 	import {
-		UploadVideo,UploadImage
+		UploadVideo,
+		UploadImage
 	} from '../../utils/upload';
 	import {
 		putRevise,
 		reviseApi
 	} from '../../api/modules/login.js'
-	import { cationApi, submitApi,revisePut } from '../../api/modules/categorize'
+	import {
+		cationApi,
+		submitApi,
+		revisePut
+	} from '../../api/modules/categorize'
 	const state = reactive({
 		addList: {
 			cover: '',
@@ -92,7 +97,7 @@
 			classify: ''
 		},
 		array: [],
-		Video:'',
+		Video: '',
 		imaUrl: '',
 		sum: "",
 		ma: '',
@@ -101,28 +106,25 @@
 	})
 	// 封装校验
 	const encapsulation = () => {
-		const { cover,videoUrl,title,describe,classify } = state.addList
+		const {
+			cover,
+			videoUrl,
+			title,
+			describe,
+			classify
+		} = state.addList
 		if (!cover) {
 			return uni.showToast({
 				title: '封面不能为空',
 				icon: 'none'
 			})
-		}else if (!title) {
-			return uni.showToast({
-				title: '标题不能小于五，大于64',
-				icon: 'none'
-			})
-		} else if(!describe) {
-			return uni.showToast({
-				title: '描述不能小于五，大于255',
-				icon: 'none'
-			})
+
 		} else if (!classify) {
 			return uni.showToast({
 				title: '分类不能为空',
 				icon: 'none'
 			})
-		} else if(!videoUrl) {
+		} else if (!videoUrl) {
 			return uni.showToast({
 				title: '视频不能为空',
 				icon: 'none'
@@ -137,7 +139,9 @@
 	}
 	onLoad(async (message) => {
 		if (message.videoId) {
-			const { data } = await reviseApi(message.videoId)
+			const {
+				data
+			} = await reviseApi(message.videoId)
 			const res = data.data
 			state.addList = res
 			state.imaUrl = res.coverPreview
@@ -146,28 +150,36 @@
 		const sum = await cationApi()
 		state.array = sum.data.data
 	})
-	
+
 	// 上传封面
 	const UploadCover = async () => {
 		await image.open()
-		const {path, url } = await image.upload()
+		const {
+			path,
+			url
+		} = await image.upload()
 		state.addList.cover = path
 		state.imaUrl = url
 	}
 	// 提交视频
 	const avatar = async () => {
 		encapsulation()
-		if ( !addList.videoId ) {
+		if (!addList.videoId) {
 			await submitApi(state.addList)
 		} else {
 			await revisePut(addList.videoId)
 		}
-				uni.switchTab({ url: '/pages/mine/mine' })
-				return uni.showToast({ title: '上传成功', icon: 'none'})
-				state.addList = {}
+		uni.switchTab({
+			url: '/pages/mine/mine'
+		})
+		return uni.showToast({
+			title: '上传成功',
+			icon: 'none'
+		})
+		state.addList = {}
 	}
 	const fz = (i) => {
-		state.Video =i.slice(11)
+		state.Video = i.slice(11)
 		state.ma = state.Video.slice(-8)
 		state.ba = state.Video.slice(0, -8)
 	}
@@ -199,7 +211,7 @@
 		console.log(e)
 	}
 	const bindPickerChange = async (e) => {
-		
+
 		console.log(state.array)
 		const index = e.detail.value
 		state.addList.classify = state.array[index].name
@@ -285,19 +297,24 @@
 				border-bottom: 3rpx solid #E0E0E0;
 				display: flex;
 				line-height: 90rpx;
+
 				.uni-list {
 					flex: 1;
-					.uni-list-cell  {
+
+					.uni-list-cell {
 						display: flex;
+
 						.uni-list-cell-db {
 							font-size: 36rpx;
 							flex: 1;
 						}
 					}
+
 					picker {
 						height: 90rpx;
 					}
 				}
+
 				.bel {
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -308,7 +325,7 @@
 					margin-right: 20rpx;
 					margin-left: 20rpx;
 					font-size: 40rpx;
-					    flex-shrink: 0;
+					flex-shrink: 0;
 				}
 
 				.ab {

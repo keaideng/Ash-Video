@@ -11,15 +11,30 @@ const _sfc_main = {
   __name: "home",
   setup(__props) {
     const state = common_vendor.reactive({
-      ImageList: []
+      ImageList: [],
+      addList: [],
+      page: {
+        pageNumber: 1,
+        pageSize: 10
+      }
     });
     common_vendor.onLoad((message) => {
       carousel();
+      Video();
     });
     const carousel = async () => {
       const { data } = await api_modules_login.carouselApi();
       state.ImageList = data.data;
-      console.log(state.ImageList);
+    };
+    const Video = async () => {
+      const { data } = await api_modules_login.getFetchApi(state.page);
+      state.addList = data;
+      console.log(data);
+    };
+    const tzsp = (videoId) => {
+      common_vendor.index.navigateTo({
+        url: "/branch/Details/Details?videoId=" + videoId
+      });
     };
     common_vendor.onShow(() => {
     });
@@ -27,13 +42,24 @@ const _sfc_main = {
     });
     common_vendor.onShareAppMessage(() => {
     });
-    const { ImageList } = common_vendor.toRefs(state);
+    const { ImageList, addList } = common_vendor.toRefs(state);
     return (_ctx, _cache) => {
       return {
         a: common_vendor.f(common_vendor.unref(ImageList), (item, k0, i0) => {
           return {
             a: item.imagePreview,
             b: item.id
+          };
+        }),
+        b: common_vendor.f(common_vendor.unref(addList), (item, k0, i0) => {
+          return {
+            a: item.cover,
+            b: common_vendor.o(($event) => tzsp(item.videoId), item.userId),
+            c: common_vendor.t(item.readCount),
+            d: common_vendor.t(item.readCount),
+            e: common_vendor.t(item.title),
+            f: common_vendor.t(item.classify),
+            g: item.userId
           };
         })
       };

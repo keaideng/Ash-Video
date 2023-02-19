@@ -16,7 +16,7 @@
 	<view class="content">
 		<view v-if="searchList.length">
 			<view class="content-bar" v-for="item in searchList" :key="item.userId" >
-				<view class="bar-image">
+				<view class="bar-image" @click="tzsp(item.videoId)">
 					<image :src="item.cover" mode=""></image>
 				</view>
 				<view class="bar-nr">
@@ -81,6 +81,11 @@
 		} = await SearchApi(state.addList)
 		state.searchList = data.data
 		console.log(state.searchList)
+	} 
+	const tzsp = (videoId) => {
+		uni.navigateTo({
+			url: '/branch/Details/Details?videoId=' + videoId + ''
+		})
 	}
 	// 页面显                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 	onShow(() => {
