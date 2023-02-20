@@ -1,49 +1,51 @@
 <template>
 	<view class="home">
 		<!-- 搜索导航 -->
-		<view class="search-nav">
-			<Search>
-				<text>分类</text>
-			</Search>
-		</view>
-		<!-- 轮播图 -->
-		<view class="carousel">
-			<swiper style="height: 422rpx;" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" >
-				<swiper-item v-for="item in ImageList" :key="item.id">
-					<image :src="item.imagePreview"></image>
-				</swiper-item>
-			</swiper>
-		</view>
-		<!-- 内容栏 -->
-		<view class="content-bar">
-			<!-- 标题 -->
-			<view class="content-title">
-				<text>为你推荐</text>
+		<Search classify>
+		</Search>
+		<scroll-view class="main" scroll-y refresher-enabled :refresher-triggered="refresherTriggered" @refresherrefresh="refresherrefresh" @scrolltolower="scrolltolower">
+			<!-- 轮播图 -->
+			<view class="carousel">
+				<swiper style="height: 422rpx;" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" >
+					<swiper-item v-for="item in ImageList" :key="item.id">
+						<image :src="item.imagePreview"></image>
+					</swiper-item>
+				</swiper>
 			</view>
-			<!-- 推荐视频 -->
-			<view class="content-Video">
-				<view class="Video" v-for="item in addList" :key="item.userId">
-					<view class="Video-image">
-						<image :src="item.cover" mode="" @click="tzsp(item.videoId)"></image>
-						<view class="icon">
-							<view class="icon-li">
-							<image src="../../static/img/播放.png" mode=""></image>
-							<text>{{ item.readCount }}</text>
-							<image src="../../static/img/Icon - 观看量.png" mode=""></image>
-							<text>{{ item.readCount }}</text>
+			<!-- 内容栏 -->
+			<view class="content-bar">
+				<!-- 标题 -->
+				<view class="content-title">
+					<text>为你推荐</text>
+				</view>
+				<!-- 推荐视频 -->
+				<view class="content-Video">
+					<view class="Video" v-for="item in addList" :key="item.userId">
+						<view class="Video-image">
+							<image :src="item.cover" mode="" @click="tzsp(item.videoId)"></image>
+							<view class="icon">
+								<view class="icon-li">
+								<image src="../../static/img/播放.png" mode=""></image>
+								<text>{{ item.readCount }}</text>
+								<image src="../../static/img/Icon - 观看量.png" mode=""></image>
+								<text>{{ item.readCount }}</text>
+								</view>
+							</view>
+						</view>
+						<view class="Video-nr">
+							<text>{{ item.title }}</text>
+							<view class="nr-icon">
+								<text>{{ item.classify }}</text>
+								<image src="../../static/img/Android更多.png" mode=""></image>
 							</view>
 						</view>
 					</view>
-					<view class="Video-nr">
-						<text>{{ item.title }}</text>
-						<view class="nr-icon">
-							<text>{{ item.classify }}</text>
-							<image src="../../static/img/Android更多.png" mode=""></image>
-						</view>
-					</view>
+				</view>
+				<view class="more">
+					{{ lock ? '我是有底线的' : loading ? '正在加载中...' : '下划开始加载' }}
 				</view>
 			</view>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -57,14 +59,10 @@
 	} from '@dcloudio/uni-app';
 	import Search from "../../components/Search/index.vue"
 	import { carouselApi,getFetchApi } from '../../api/modules/login'
-	import { reactive,toRefs } from 'vue'
+	import { reactive,ref,toRefs } from 'vue'
 	const state = reactive({
 		ImageList: [],
 		addList: [],
-		page: {
-			pageNumber: 1,
-			pageSize: 10
-		},
 	})
 	// 页面加载
 	onLoad((message) => {
@@ -78,18 +76,53 @@
 	}
 	// 获取视频
 	const Video = async () => {
-		const { data } = await getFetchApi(state.page)
+		loading.value = true
+		const { data } = await getFetchApi(page)
 		state.addList = data
-		console.log(data)
+		loading.value = false
+		return data
 	}
 	const tzsp = (videoId) => {
 		uni.navigateTo({
 			url: '/branch/Details/Details?videoId=' + videoId + ''
 		})
 	}
+	
+	// 下拉刷新
+	const refresherTriggered = ref(false)
+	const refresherrefresh = async () => {
+		refresherTriggered.value = true
+		await Promise.all([carousel(), Video()])
+		refresherTriggered.value = false
+		lock.value = false
+		page.pageNumber = 1
+	}
+	const loading = ref(false)
+	// 上拉加载
+	const page = {
+		pageNumber: 1,
+		pageSize: 6,
+	}
+	let lock = ref(false)
+	const scrolltolower = async () => {
+		if(lock.value || loading.value) {
+			return
+		}
+		page.pageNumber ++
+		
+		loading.value = true
+		const { data } = await getFetchApi(page)
+
+		loading.value = false
+		if(!data.length) {
+			lock.value = true
+			return
+		}
+		state.addList.push(...data)
+	}
 	// 页面显示
 	onShow(() => {
-
+		
 	})
 
 	// 页面隐藏
@@ -106,21 +139,17 @@
 
 <style lang="scss">
 	.home {
-		padding: 0rpx 20rpx;
-
-		// 搜索导航
-		.search-nav {
-			display: flex;
-			margin-top: 10rpx;
-			color: #656771;
-			text {
-				margin: 20rpx 0rpx 0rpx 10rpx;
-			}
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		
+		.main {
+			flex: 1;
+			flex-shrink: 0;
+			height: 0;
 		}
-
 		// 轮播图
 		.carousel {
-			margin-top: 40rpx;
 			border-radius: 15rpx;
 			image {
 				width: 100%;
@@ -134,9 +163,15 @@
 		.wx-swiper-dots.wx-swiper-dots-horizontal {
 			margin-bottom: 5rpx;
 		}
+		.more {
+			color: #999;
+			padding: 12rpx;
+			text-align: center;
+		}
 		// 内容栏
 		.content-bar {
 			margin-top: 40rpx;
+			padding: 0rpx 20rpx;
 			// background-color: antiquewhite;
 			// 标题
 			.content-title {

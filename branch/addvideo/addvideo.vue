@@ -114,21 +114,42 @@
 			classify
 		} = state.addList
 		if (!cover) {
-			return uni.showToast({
+			uni.showToast({
 				title: '封面不能为空',
 				icon: 'none'
 			})
-
-		} else if (!classify) {
-			return uni.showToast({
-				title: '分类不能为空',
-				icon: 'none'
-			})
 		} else if (!videoUrl) {
-			return uni.showToast({
+			uni.showToast({
 				title: '视频不能为空',
 				icon: 'none'
 			})
+		} else if (!title) {
+			uni.showToast({
+				title: '标题不能为空',
+				icon: 'none'
+			})
+		} else if (title.length <= 5 && title.length <= 64) {
+			uni.showToast({
+				title: '标题不能小于5，大于64',
+				icon: 'none'
+			})
+		} else if (!describe) {
+			uni.showToast({
+				title: '描述不能为空',
+				icon: 'none'
+			})
+		} else if (describe.length <= 5 && describe.length <= 255) {
+			uni.showToast({
+				title: '标题不能小于5，大于255',
+				icon: 'none'
+			})
+		} else if (!classify) {
+			uni.showToast({
+				title: '分类不能为空',
+				icon: 'none'
+			})
+		} else {
+			return true
 		}
 	}
 	// 页面加载
@@ -154,29 +175,37 @@
 	// 上传封面
 	const UploadCover = async () => {
 		await image.open()
+		uni.showLoading({  // 显示加载中loading效果 
+		    title: "正在上传封面",
+		    mask: true  //开启蒙版遮罩
+		});
 		const {
 			path,
 			url
 		} = await image.upload()
+		uni.hideLoading()
 		state.addList.cover = path
 		state.imaUrl = url
 	}
 	// 提交视频
 	const avatar = async () => {
-		encapsulation()
-		if (!addList.videoId) {
-			await submitApi(state.addList)
-		} else {
-			await revisePut(addList.videoId)
+		const b = encapsulation()
+		if (b) {
+			if (!addList.videoId) {
+				await submitApi(state.addList)
+			} else {
+				await revisePut(addList.videoId)
+			}
+			uni.switchTab({
+				url: '/pages/mine/mine'
+			})
+			return uni.showToast({
+				title: '上传成功',
+				icon: 'none'
+			})
+			state.addList = {}
 		}
-		uni.switchTab({
-			url: '/pages/mine/mine'
-		})
-		return uni.showToast({
-			title: '上传成功',
-			icon: 'none'
-		})
-		state.addList = {}
+
 	}
 	const fz = (i) => {
 		state.Video = i.slice(11)

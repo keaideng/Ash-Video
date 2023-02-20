@@ -1,8 +1,6 @@
 <template>
 	<view class="home">
-		<view class="search-nav">
-			<Search></Search>
-		</view>
+		<Search></Search>
 	</view>
 	<!-- 全部分类 -->
 	<view class="allsort">
@@ -36,7 +34,7 @@
 	})
 	const lw = (name) => {
 		uni.navigateTo({
-			url: '/branch/SearchPage/SearchPage?name= '+ name +''
+			url: '/branch/SearchPage/SearchPage?name='+ name +''
 		})
 	}
 	// 页面加载
@@ -63,18 +61,6 @@
 </script> 
 
 <style lang="scss">
-	.home {
-		padding: 0rpx 20rpx;
-	}
-	.search-nav {
-		display: flex;
-		margin-top: 10rpx;
-		color: #656771;
-
-		text {
-			margin: 20rpx 0rpx 0rpx 10rpx;
-		}
-	}
 	.allsort {
 		.sort {
 			width: 100%;

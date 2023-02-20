@@ -12,11 +12,7 @@ const _sfc_main = {
   setup(__props) {
     const state = common_vendor.reactive({
       ImageList: [],
-      addList: [],
-      page: {
-        pageNumber: 1,
-        pageSize: 10
-      }
+      addList: []
     });
     common_vendor.onLoad((message) => {
       carousel();
@@ -27,14 +23,44 @@ const _sfc_main = {
       state.ImageList = data.data;
     };
     const Video = async () => {
-      const { data } = await api_modules_login.getFetchApi(state.page);
+      loading.value = true;
+      const { data } = await api_modules_login.getFetchApi(page);
       state.addList = data;
-      console.log(data);
+      loading.value = false;
+      return data;
     };
     const tzsp = (videoId) => {
       common_vendor.index.navigateTo({
         url: "/branch/Details/Details?videoId=" + videoId
       });
+    };
+    const refresherTriggered = common_vendor.ref(false);
+    const refresherrefresh = async () => {
+      refresherTriggered.value = true;
+      await Promise.all([carousel(), Video()]);
+      refresherTriggered.value = false;
+      lock.value = false;
+      page.pageNumber = 1;
+    };
+    const loading = common_vendor.ref(false);
+    const page = {
+      pageNumber: 1,
+      pageSize: 6
+    };
+    let lock = common_vendor.ref(false);
+    const scrolltolower = async () => {
+      if (lock.value || loading.value) {
+        return;
+      }
+      page.pageNumber++;
+      loading.value = true;
+      const { data } = await api_modules_login.getFetchApi(page);
+      loading.value = false;
+      if (!data.length) {
+        lock.value = true;
+        return;
+      }
+      state.addList.push(...data);
     };
     common_vendor.onShow(() => {
     });
@@ -45,13 +71,16 @@ const _sfc_main = {
     const { ImageList, addList } = common_vendor.toRefs(state);
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.f(common_vendor.unref(ImageList), (item, k0, i0) => {
+        a: common_vendor.p({
+          classify: true
+        }),
+        b: common_vendor.f(common_vendor.unref(ImageList), (item, k0, i0) => {
           return {
             a: item.imagePreview,
             b: item.id
           };
         }),
-        b: common_vendor.f(common_vendor.unref(addList), (item, k0, i0) => {
+        c: common_vendor.f(common_vendor.unref(addList), (item, k0, i0) => {
           return {
             a: item.cover,
             b: common_vendor.o(($event) => tzsp(item.videoId), item.userId),
@@ -61,7 +90,11 @@ const _sfc_main = {
             f: common_vendor.t(item.classify),
             g: item.userId
           };
-        })
+        }),
+        d: common_vendor.t(common_vendor.unref(lock) ? "\u6211\u662F\u6709\u5E95\u7EBF\u7684" : loading.value ? "\u6B63\u5728\u52A0\u8F7D\u4E2D..." : "\u4E0B\u5212\u5F00\u59CB\u52A0\u8F7D"),
+        e: refresherTriggered.value,
+        f: common_vendor.o(refresherrefresh),
+        g: common_vendor.o(scrolltolower)
       };
     };
   }

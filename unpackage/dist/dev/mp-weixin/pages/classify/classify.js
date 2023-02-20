@@ -15,7 +15,7 @@ const _sfc_main = {
     });
     const lw = (name) => {
       common_vendor.index.navigateTo({
-        url: "/branch/SearchPage/SearchPage?name= " + name
+        url: "/branch/SearchPage/SearchPage?name=" + name
       });
     };
     common_vendor.onLoad(async (message) => {

@@ -1,21 +1,21 @@
 <template>
 	<!-- 搜索栏 -->
-	<view class="search">
+	<view class="search-box">
 		<!-- 搜索导航 -->
 		<view class="search-nav">
-			<navigator>
+			<view class="input">
 				<icon type="search" size="13"></icon>
 				<input type="text" placeholder="精彩热搜: 湖南众智学院" v-model="addList.keyWord" />
-			</navigator>
+			</view>
 			<view class="nav" @click="search">
-				<text>搜索</text>
+				搜索
 			</view>
 		</view>
 	</view>
 	<!-- 内容栏 -->
 	<view class="content">
 		<view v-if="searchList.length">
-			<view class="content-bar" v-for="item in searchList" :key="item.userId" >
+			<view class="content-bar" v-for="item in searchList" :key="item.userId">
 				<view class="bar-image" @click="tzsp(item.videoId)">
 					<image :src="item.cover" mode=""></image>
 				</view>
@@ -68,12 +68,14 @@
 			keyWord: ''
 		},
 		searchList: []
-
 	})
 
 	// 页面加载
 	onLoad((message) => {
 		state.addList.keyWord = message.name
+		if(message.name) {
+			search()
+		}
 	})
 	const search = async () => {
 		const {
@@ -81,7 +83,7 @@
 		} = await SearchApi(state.addList)
 		state.searchList = data.data
 		console.log(state.searchList)
-	} 
+	}
 	const tzsp = (videoId) => {
 		uni.navigateTo({
 			url: '/branch/Details/Details?videoId=' + videoId + ''
@@ -108,44 +110,38 @@
 </script>
 
 <style lang="scss">
-	// 搜索栏
-	.search {
-		padding: 20rpx;
+	// 搜索导航
+	.search-box {
+		background-color: #fff;
+		width: 100%;
 
-		// 搜索导航
 		.search-nav {
+			width: 100%;
+			box-sizing: border-box;
 			display: flex;
 			color: #656771;
+			padding: 12rpx 16rpx;
+			align-items: center;
 
-			navigator {
-				position: relative;
+			.input {
 				flex: 1;
 				width: 620rpx;
-				height: 66rpx;
-				background-color: #f7f7f7;
-				border-radius: 30rpx;
-				line-height: 66rpx;
+				background-color: #F6F7F8;
+				border-radius: 9999rpx;
+				height: 60rpx;
 				font-size: 26rpx;
+				padding: 0 12rpx;
+				display: flex;
+				align-items: center;
 
 				icon {
-					position: absolute;
-					top: 14rpx;
-					left: 25rpx;
-					margin-right: 10rpx;
-				}
-
-				input {
-					position: absolute;
-					top: 12rpx;
-					left: 60rpx;
+					margin: 0 12rpx;
 				}
 			}
 
 			.nav {
-				position: relative;
-				top: 14rpx;
+				margin-left: 12rpx;
 			}
-
 		}
 	}
 
@@ -165,6 +161,7 @@
 				height: 169rpx;
 				border-radius: 25rpx;
 				overflow: hidden;
+
 				image {
 					width: 100%;
 					height: 100%;
@@ -222,6 +219,7 @@
 				}
 			}
 		}
+
 		.zwnr {
 			text-align: center;
 			margin-top: 200rpx;
