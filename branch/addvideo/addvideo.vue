@@ -138,9 +138,9 @@
 				title: '描述不能为空',
 				icon: 'none'
 			})
-		} else if (describe.length < 5 || describe.length > 255) {
+		} else if (describe.length < 2 || describe.length > 255) {
 			uni.showToast({
-				title: '标题不能小于5，大于255',
+				title: '描述不能小于2，大于255',
 				icon: 'none'
 			})
 		} else if (!classify) {

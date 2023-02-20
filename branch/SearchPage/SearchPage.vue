@@ -25,15 +25,15 @@
 						<view class="icon">
 							<view class="icon-li">
 								<view class="li1">
-									<image src="../../static/img/播放.png" mode=""></image>
-									<text>0</text>
+									<image src="../../static/img/bf.png" mode=""></image>
+									<text>{{ item.readCount }}</text>
 								</view>
 								<view class="li1">
-									<image src="../../static/img/浏览.png" mode=""></image>
-									<text>0</text>
+									<image src="../../static/img/dz.png" mode=""></image>
+									<text>{{ item.likeCount }}</text>
 								</view>
 								<view>
-									<image src="../../static/img/Android更多 (1).png" mode=""></image>
+									<image src="../../static/img/Android1.png" mode=""></image>
 								</view>
 							</view>
 						</view>

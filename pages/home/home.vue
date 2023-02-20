@@ -25,10 +25,10 @@
 							<image :src="item.cover" mode="" @click="tzsp(item.videoId)"></image>
 							<view class="icon">
 								<view class="icon-li">
-								<image src="../../static/img/播放.png" mode=""></image>
+								<image src="../../static/bf.png" mode=""></image>
 								<text>{{ item.readCount }}</text>
-								<image src="../../static/img/Icon - 观看量.png" mode=""></image>
-								<text>{{ item.readCount }}</text>
+								<image src="../../static/img/dz.png" mode=""></image>
+								<text>{{ item.likeCount }}</text>
 								</view>
 							</view>
 						</view>
@@ -36,7 +36,7 @@
 							<text>{{ item.title }}</text>
 							<view class="nr-icon">
 								<text>{{ item.classify }}</text>
-								<image src="../../static/img/Android更多.png" mode=""></image>
+								<image src="../../static/img/Android1.png" mode=""></image>
 							</view>
 						</view>
 					</view>

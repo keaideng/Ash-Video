@@ -23,8 +23,9 @@
 						<view class="bf-sl">
 							<image src="../../static/视频.png" mode=""></image>
 							<text>{{ demandList.readCount }}</text>
-							<image src="../../static/img/播放.png" mode=""></image>
-							<text>0</text>
+							<image src="../../static/点赞 (1).png" mode="" @click="Like" v-if="!demandList.isLike"></image>
+							<image src="../../static/点赞 (2).png" mode="" @click="Like" v-else></image>
+							<text>{{ demandList.likeCount }}</text>
 						</view>
 						<view class="bf-sc">收藏</view>
 					</view>
@@ -45,7 +46,7 @@
 					</view>
 					<view class="comments-fb" @click="publish(demandList.videoId)">发布</view>
 				</view>
-				<view class="pl-reply" v-for="item,index in appList" :key="item.commentId">
+				<view class="pl-reply" v-for="item,index in appList" :key="item.commentId" v-if="!item">
 					<view class="reply-tx">
 						<image :src="item.user.avatar" mode=""></image>
 					</view>
@@ -88,6 +89,9 @@
 						</view>
 					</view>
 				</view>
+				<view class="reply-zw" v-if='demandList'>
+					<text>暂时无评论</text>
+				</view>
 				<view class="pl-comments comments" v-if="sum">
 					<view class="comments-input">
 						<input type="text" v-model="comst">
@@ -128,18 +132,21 @@
 		postComts,
 		getReply,
 		postReply,
+		postLike,
+		deleteCancel
 	} from '../../api/modules/upload.js'
 	// 页面加载
-	onLoad(async (message) => {
-		const videoId = message.videoId
-		const {
-			data
-		} = await VideoDetails({
+	onLoad((message) => {
+		GetData(message.videoId)
+		Onlinedemand(message.videoId)
+	})
+	// 获取数据
+	const GetData = async (videoId) => {
+		const { data } = await VideoDetails({
 			videoId
 		})
 		state.demandList = data.data
-		Onlinedemand(message.videoId)
-	})
+	}
 	// 获取回复评论
 	const Reply = async (commentId) => {
 		const {
@@ -201,10 +208,21 @@
 	function toDate(s) {
 		return (new Date(s)).toLocaleString()
 	}
-
+	// 点赞
+	const Like = async () => {
+		console.log(state.demandList.videoId)
+		if(!state.demandList.isLike) {
+			await postLike({ videoId: state.demandList.videoId })
+			state.demandList.isLike = 1
+			state.demandList.likeCount += 1
+		} else {
+			await deleteCancel({ videoId: state.demandList.videoId })
+			state.demandList.isLike = 0
+			state.demandList.likeCount  -= 1
+		}
+	}
 	// 页面显示
 	onShow(() => {
-
 	})
 
 	// 页面隐藏
@@ -377,7 +395,6 @@
 				.pl-reply {
 					display: flex;
 					margin-top: 20rpx;
-
 					.reply-tx {
 						width: 100rpx;
 						height: 100%;
@@ -500,5 +517,11 @@
 				}
 			}
 		}
+		.reply-zw {
+			width: 100%;
+			text-align: center;
+			margin-top: 100rpx;
+		}
+		
 	}
 </style>
