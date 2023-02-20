@@ -128,7 +128,7 @@
 				title: '标题不能为空',
 				icon: 'none'
 			})
-		} else if (title.length <= 5 && title.length <= 64) {
+		} else if (title.length < 5 || title.length > 64) {
 			uni.showToast({
 				title: '标题不能小于5，大于64',
 				icon: 'none'
@@ -138,7 +138,7 @@
 				title: '描述不能为空',
 				icon: 'none'
 			})
-		} else if (describe.length <= 5 && describe.length <= 255) {
+		} else if (describe.length < 5 || describe.length > 255) {
 			uni.showToast({
 				title: '标题不能小于5，大于255',
 				icon: 'none'

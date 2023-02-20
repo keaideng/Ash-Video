@@ -93,11 +93,13 @@ class Request {
 						wx.clearStorage()
 					  return Promise.reject()
 					} else if(res.statusCode !== 200) {
-						const message = res.data.detail || res.data.message
-						uni.showToast({
-					  	title: message,
-					  	icon: 'error'
-						})
+						if(res.data) {
+							const message = res.data.detail || res.data.message
+							uni.showToast({
+							title: message,
+							icon: 'error'
+							})
+						}
 					}
 				}
 			})
