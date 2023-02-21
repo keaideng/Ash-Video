@@ -129,7 +129,8 @@
 				url: '/branch/Details/Details?videoId=' + videoId + ''
 			})
 		} else {
-			plus.runtime.openUrl(url)
+			// 功能关闭
+			// plus.runtime.openUrl(url)
 		}
 	}
 	// 页面显示
