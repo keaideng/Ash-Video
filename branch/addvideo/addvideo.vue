@@ -214,7 +214,7 @@
 	}
 	// null ing ed
 	const zt = ref('null')
-	// 上传视频 
+	// 上传视频
 	const uploud = async () => {
 		await upload.open()
 		zt.value = 'ing'
@@ -293,20 +293,18 @@
 
 			.imj {
 				position: absolute;
+				overflow: hidden;
 				width: 100%;
-				height: 420rpx;
-
-				image {
-					width: 58rpx;
-					height: 58rpx;
-				}
+				height: 422rpx;
 
 				.image {
-					width: 100%;
-					height: 422rpx;
+						min-width: 100%;
+						min-height: 100%;
 				}
 
 				.image1 {
+					width: 48rpx;
+					height: 48rpx;
 					margin-top: 120rpx;
 				}
 

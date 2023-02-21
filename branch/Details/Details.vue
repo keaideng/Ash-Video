@@ -23,20 +23,20 @@
 						<view class="bf-sl">
 							<image src="../../static/视频.png" mode=""></image>
 							<text>{{ demandList.readCount }}</text>
-							<image src="../../static/点赞 (1).png" mode="" @click="Like" v-if="!demandList.isLike"></image>
-							<image src="../../static/点赞 (2).png" mode="" @click="Like" v-else></image>
+							<image src="../../static/zd.png" mode="" @click="Like" v-if="!demandList.isLike"></image>
+							<image src="../../static/zd1.png" mode="" @click="Like" v-else></image>
 							<text>{{ demandList.likeCount }}</text>
 						</view>
 						<view class="bf-sc">收藏</view>
 					</view>
 				</view>
-				<view class="yh-xj">
+				<!-- <view class="yh-xj">
 					<view class="xj1">选集</view>
 					<view class="xj2">
 						<text>共0集</text>
 						<image src="../../static/右箭头.png" mode=""></image>
 					</view>
-				</view>
+				</view> -->
 			</view>
 			<!-- 评论 -->
 			<view class="content-pl" v-else>
@@ -51,16 +51,21 @@
 						<image :src="item.user.avatar" mode=""></image>
 					</view>
 					<view class="reply-hf">
-						<view class="hf-mz">{{item.user.nickname}}</view>
+						<view class="hf">
+							<view class="hf-mz">{{item.user.nickname}}</view>
+							<view class="sj1">{{ toDate(item.createdAt) }}</view>
+						</view>
+						
+						
 						<view class="hf-nr">
-							<view class="nr-sj">
-								<view class="sj1">{{ toDate(item.createdAt) }}</view>
+							<!-- <view class="nr-sj">
+								
 								<view class="sj2">
 									<image src="../../static/img/点赞 (1).png" mode=""></image>
 									<text>1323</text>
 								</view>
 								<view class="sj3">回复</view>
-							</view>
+							</view> -->
 							<view class="nr-lgm" @click="Replycomments(item.commentId)">{{ item.text }}</view>
 							<view class="nr-rp">
 								<view class="rp">热议</view>
@@ -111,6 +116,7 @@
 		onShow,
 		onHide
 	} from '@dcloudio/uni-app';
+	import dayjs from "dayjs"
 	import {
 		reactive,
 		toRefs
@@ -135,6 +141,7 @@
 		postLike,
 		deleteCancel
 	} from '../../api/modules/upload.js'
+	
 	// 页面加载
 	onLoad((message) => {
 		GetData(message.videoId)
@@ -168,6 +175,7 @@
 	const Replycomments = (replyId) => {
 		state.sum = true
 		state.replyId = replyId
+		Onlinedemand(state.demandList.videoId)
 	}
 	const comments = async () => {
 		const {
@@ -203,10 +211,11 @@
 			})
 		}
 		state.text = ''
+		Onlinedemand(state.demandList.videoId)
 	}
 
 	function toDate(s) {
-		return (new Date(s)).toLocaleString()
+		return dayjs(s).format('YYYY-MM-DD hh:mm:ss')
 	}
 	// 点赞
 	const Like = async () => {
@@ -227,7 +236,7 @@
 
 	// 页面隐藏
 	onHide(() => {
-
+		
 	})
 
 	// 页面分享(不定义该函数 页面将无法分享)
@@ -410,13 +419,22 @@
 					.reply-hf {
 						flex: 1;
 
-						.hf-mz {
-							height: 55rpx;
-							line-height: 55rpx;
-							font-size: 30rpx;
-							color: #FF6699;
+						.hf {
+							display: flex;
+							align-items: center;
+							.hf-mz {
+								flex: 1;
+								height: 55rpx;
+								line-height: 55rpx;
+								font-size: 30rpx;
+								color: #FF6699;
+							}
+							.sj1 {
+								color: #9499a0;
+								font-size: 20rpx;
+							}
+							
 						}
-
 						.hf-nr {
 							view {
 								margin-top: 10rpx;
@@ -432,9 +450,6 @@
 								font-size: 20rpx;
 								display: flex;
 								margin-top: 0rpx;
-								.sj1 {
-									
-								}
 								.sj2 {
 									display: flex;
 									margin-left: 20rpx;

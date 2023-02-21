@@ -7,7 +7,7 @@
 			<!-- 轮播图 -->
 			<view class="carousel">
 				<swiper style="height: 422rpx;" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" >
-					<swiper-item v-for="item in ImageList" :key="item.id">
+					<swiper-item v-for="item in ImageList" :key="item.id" @click="carouselMap(item)">
 						<image :src="item.imagePreview"></image>
 					</swiper-item>
 				</swiper>
@@ -30,6 +30,8 @@
 								<image src="../../static/img/dz.png" mode=""></image>
 								<text>{{ item.likeCount }}</text>
 								</view>
+							</view>
+							<view class="tsb">
 							</view>
 						</view>
 						<view class="Video-nr">
@@ -120,6 +122,16 @@
 		}
 		state.addList.push(...data)
 	}
+	// 点击轮播图跳转
+	const carouselMap = ({videoId,url}) => {
+		if(videoId) {
+			uni.navigateTo({
+				url: '/branch/Details/Details?videoId=' + videoId + ''
+			})
+		} else {
+			plus.runtime.openUrl(url)
+		}
+	}
 	// 页面显示
 	onShow(() => {
 		
@@ -197,7 +209,9 @@
 					margin-top: 30rpx;
 					overflow: hidden;
 					.Video-image {
+						position: relative;
 						height: 191rpx;
+						overflow: hidden;
 						image {
 							width: 100%;
 							height: 100%;
@@ -207,12 +221,14 @@
 							width: 100%;
 							height: 30rpx;
 							top: 150rpx;
+							z-index: 2;
 							.icon-li {
 								display: flex;
 								width: 100%;
 								height: 30rpx;
 								line-height: 30rpx;
 								color: #f1f1f1;
+							
 								image {
 									width: 30rpx;
 									height: 30rpx;
@@ -225,16 +241,26 @@
 								}
 							}
 						}
+						.tsb {
+							z-index: 1;
+							position: absolute;
+							width: 100%;
+							height: 50rpx;
+							bottom: -50rpx;
+							box-shadow: 0rpx -20rpx 40rpx 10rpx rgba(0,0,0,0.9);
+							
+						}
 					}
 					.Video-nr {
-						padding: 0rpx 20rpx;
+						width: 100%;
 						margin-top: 20rpx;
 						white-space: nowrap;
 						overflow: hidden;
 						text-overflow: ellipsis;
-
+						
 						.nr-icon {
 							display: flex;
+							padding: 0rpx 20rpx;
 							justify-content: space-between;
 							margin-top: 20rpx;
 							color: #cdcdcd;
