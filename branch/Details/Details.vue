@@ -1,7 +1,7 @@
 <template>
 	<view class="details">
 		<view class="details-Play">
-			<video :src="demandList.videoUrl" controls></video>
+			<video :src="demandList.videoUrl" :danmu-list="danmuList" controls></video>
 		</view>
 		<view class="details-content">
 			<view class="content">
@@ -124,6 +124,7 @@
 	import dayjs from "dayjs"
 	import {
 		reactive,
+		ref,
 		toRefs
 	} from 'vue';
 	const state = reactive({
@@ -146,6 +147,8 @@
 		postLike,
 		deleteCancel
 	} from '../../api/modules/upload.js'
+	
+	const danmuList = ref([])
 	
 	// 页面加载
 	onLoad((message) => {
