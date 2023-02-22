@@ -17,7 +17,9 @@
 				<view class="jj-yh">
 					<view class="yh-tx">
 						<image :src="demandList.user.avatar" mode=""></image>
-						<text>0 粉丝</text>
+						<view class="sp-jj">
+							<text>{{ demandList.title }}</text>
+						</view>
 					</view>
 					<view class="yh-bf">
 						<view class="bf-sl">
@@ -27,8 +29,11 @@
 							<image src="../../static/zd1.png" mode="" @click="Like" v-else></image>
 							<text>{{ demandList.likeCount }}</text>
 						</view>
-						<view class="bf-sc">收藏</view>
+						<!-- <view class="bf-sc">收藏</view> -->
 					</view>
+				</view>
+				<view class="yh-xj">
+					<text>{{ demandList.describe }}</text>
 				</view>
 				<!-- <view class="yh-xj">
 					<view class="xj1">选集</view>
@@ -146,6 +151,7 @@
 	onLoad((message) => {
 		GetData(message.videoId)
 		Onlinedemand(message.videoId)
+		
 	})
 	// 获取数据
 	const GetData = async (videoId) => {
@@ -153,6 +159,7 @@
 			videoId
 		})
 		state.demandList = data.data
+		console.log(data)
 	}
 	// 获取回复评论
 	const Reply = async (commentId) => {
@@ -189,6 +196,7 @@
 		})
 		state.sum = false
 		state.comst = ''
+		Replycomments(state.replyId)
 	}
 	// 更多回复
 	const dianMore = async (item) => {
@@ -305,8 +313,13 @@
 						}
 
 						text {
-							margin-left: 30rpx;
-							color: #A9A5A0;
+							font-size: 32rpx;
+							margin-left: 20rpx;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							-webkit-line-clamp: 2;
+							display: -webkit-box;
+							-webkit-box-orient: vertical;
 						}
 					}
 
@@ -346,11 +359,10 @@
 				.yh-xj {
 					display: flex;
 					height: 170rpx;
-					line-height: 170rpx;
+					margin-top: 20rpx;
 					padding: 0rpx 40rpx;
-					border-bottom: 1rpx solid #f1f1f1;
-					font-size: 38rpx;
-					font-weight: bold;
+					font-size: 28rpx;
+					color: #666;
 
 					.xj1 {
 						flex: 1;
@@ -372,8 +384,8 @@
 				padding: 20rpx;
 
 				.pl-comments {
+					width: 100%;
 					display: flex;
-					height: 100rpx;
 					line-height: 100rpx;
 
 					.comments-input {
@@ -395,6 +407,10 @@
 				.comments {
 					position: fixed;
 					bottom: 0;
+					left: 0;
+					padding: 20rpx;
+					box-sizing: border-box;
+					box-shadow: 0 0 20rpx rgba(0,0,0,0.2);
 
 					input {
 						width: 570rpx;

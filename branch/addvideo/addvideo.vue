@@ -271,11 +271,6 @@
 </script>
 
 <style lang="scss">
-	.hmde {
-		height: 1182rpx;
-		background-color: #F0F0F0;
-	}
-
 	.home {
 		width: 100%;
 		height: 864rpx;
@@ -376,7 +371,7 @@
 			height: 100rpx;
 			background-color: lightcoral;
 			display: flex;
-			border-top: 3rpx solid #E0E0E0;
+			border-bottom: 3rpx solid #E0E0E0;
 
 			.complete {
 				width: 375rpx;
@@ -407,10 +402,6 @@
 		}
 	}
 
-	.bottom {
-		height: 17rpx;
-		background-color: #E8E8E8;
-	}
 
 	.jdt {
 		height: 6rpx;

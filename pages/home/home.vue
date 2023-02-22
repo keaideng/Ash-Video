@@ -6,7 +6,7 @@
 		<scroll-view class="main" scroll-y refresher-enabled :refresher-triggered="refresherTriggered" @refresherrefresh="refresherrefresh" @scrolltolower="scrolltolower">
 			<!-- 轮播图 -->
 			<view class="carousel">
-				<swiper style="height: 422rpx;" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" >
+				<swiper style="height: 422rpx;" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular >
 					<swiper-item v-for="item in ImageList" :key="item.id" @click="carouselMap(item)">
 						<image :src="item.imagePreview"></image>
 					</swiper-item>
@@ -35,7 +35,7 @@
 							</view>
 						</view>
 						<view class="Video-nr">
-							<text>{{ item.title }}</text>
+							<text class="nr">{{ item.title }}</text>
 							<view class="nr-icon">
 								<text>{{ item.classify }}</text>
 								<image src="../../static/img/Android1.png" mode=""></image>
@@ -257,7 +257,9 @@
 						white-space: nowrap;
 						overflow: hidden;
 						text-overflow: ellipsis;
-						
+						.nr {
+							padding: 0rpx 20rpx;
+						}
 						.nr-icon {
 							display: flex;
 							padding: 0rpx 20rpx;

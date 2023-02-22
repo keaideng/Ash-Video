@@ -5,7 +5,7 @@
 		<view class="search-nav">
 			<view class="input">
 				<icon type="search" size="13"></icon>
-				<input type="text" placeholder="精彩热搜: 湖南众智学院" v-model="addList.keyWord" />
+				<input type="text" placeholder="精彩热搜: 湖南众智学院" @confirm="search" v-model="addList.keyWord" :focus="firstFocus" />
 			</view>
 			<view class="nav" @click="search">
 				搜索
@@ -67,7 +67,8 @@
 		addList: {
 			keyWord: ''
 		},
-		searchList: []
+		searchList: [],
+		firstFocus: false
 	})
 
 	// 页面加载
@@ -82,6 +83,7 @@
 			data
 		} = await SearchApi(state.addList)
 		state.searchList = data.data
+		this.onSearchBtnClick()
 		console.log(state.searchList)
 	}
 	const tzsp = (videoId) => {
@@ -89,9 +91,9 @@
 			url: '/branch/Details/Details?videoId=' + videoId + ''
 		})
 	}
-	// 页面显                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+	// 页面显
 	onShow(() => {
-
+		state.firstFocus = true
 	})
 
 	// 页面隐藏
@@ -105,7 +107,8 @@
 	})
 	const {
 		addList,
-		searchList
+		searchList,
+		firstFocus
 	} = toRefs(state)
 </script>
 
