@@ -22,7 +22,7 @@ export class UploadImage {
 	upload() {
 		return new Promise((r, e) => {
 			uni.uploadFile({
-				url: 'http://47.100.96.69:7001/upload/image',
+				url: 'https://tts.flycran.com/upload/image',
 				header: {
 					authorization: uni.getStorageSync('authorization')
 				},
@@ -66,7 +66,7 @@ export class UploadVideo {
 		return new Promise(async (r, e) => {
 			const { data } = await getUploadTokenApi()
 			const uploadTask = uni.uploadFile({
-				url: 'http://upload.qiniup.com',
+				url: 'https://upload.qiniup.com',
 				header: {
 					authorization: uni.getStorageSync('authorization')
 				},

@@ -2,7 +2,7 @@
 import { $http } from '@/utils/request.js'
 
 // 配置默认请求地址
-$http.baseUrl = 'http://47.100.96.69:7001'
+$http.baseUrl = 'https://tts.flycran.com'
 
 
 // 配置请求拦截器

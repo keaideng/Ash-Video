@@ -114,21 +114,42 @@
 			classify
 		} = state.addList
 		if (!cover) {
-			return uni.showToast({
+			uni.showToast({
 				title: '封面不能为空',
 				icon: 'none'
 			})
-
-		} else if (!classify) {
-			return uni.showToast({
-				title: '分类不能为空',
-				icon: 'none'
-			})
 		} else if (!videoUrl) {
-			return uni.showToast({
+			uni.showToast({
 				title: '视频不能为空',
 				icon: 'none'
 			})
+		} else if (!title) {
+			uni.showToast({
+				title: '标题不能为空',
+				icon: 'none'
+			})
+		} else if (title.length < 5 || title.length > 64) {
+			uni.showToast({
+				title: '标题不能小于5，大于64',
+				icon: 'none'
+			})
+		} else if (!describe) {
+			uni.showToast({
+				title: '描述不能为空',
+				icon: 'none'
+			})
+		} else if (describe.length < 2 || describe.length > 255) {
+			uni.showToast({
+				title: '描述不能小于2，大于255',
+				icon: 'none'
+			})
+		} else if (!classify) {
+			uni.showToast({
+				title: '分类不能为空',
+				icon: 'none'
+			})
+		} else {
+			return true
 		}
 	}
 	// 页面加载
@@ -154,29 +175,37 @@
 	// 上传封面
 	const UploadCover = async () => {
 		await image.open()
+		uni.showLoading({  // 显示加载中loading效果 
+		    title: "正在上传封面",
+		    mask: true  //开启蒙版遮罩
+		});
 		const {
 			path,
 			url
 		} = await image.upload()
+		uni.hideLoading()
 		state.addList.cover = path
 		state.imaUrl = url
 	}
 	// 提交视频
 	const avatar = async () => {
-		encapsulation()
-		if (!addList.videoId) {
-			await submitApi(state.addList)
-		} else {
-			await revisePut(addList.videoId)
+		const b = encapsulation()
+		if (b) {
+			if (!addList.videoId) {
+				await submitApi(state.addList)
+			} else {
+				await revisePut(addList.videoId)
+			}
+			uni.switchTab({
+				url: '/pages/mine/mine'
+			})
+			return uni.showToast({
+				title: '上传成功',
+				icon: 'none'
+			})
+			state.addList = {}
 		}
-		uni.switchTab({
-			url: '/pages/mine/mine'
-		})
-		return uni.showToast({
-			title: '上传成功',
-			icon: 'none'
-		})
-		state.addList = {}
+
 	}
 	const fz = (i) => {
 		state.Video = i.slice(11)
@@ -185,7 +214,7 @@
 	}
 	// null ing ed
 	const zt = ref('null')
-	// 上传视频 
+	// 上传视频
 	const uploud = async () => {
 		await upload.open()
 		zt.value = 'ing'
@@ -242,11 +271,6 @@
 </script>
 
 <style lang="scss">
-	.hmde {
-		height: 1182rpx;
-		background-color: #F0F0F0;
-	}
-
 	.home {
 		width: 100%;
 		height: 864rpx;
@@ -264,20 +288,18 @@
 
 			.imj {
 				position: absolute;
+				overflow: hidden;
 				width: 100%;
-				height: 420rpx;
-
-				image {
-					width: 58rpx;
-					height: 58rpx;
-				}
+				height: 422rpx;
 
 				.image {
-					width: 100%;
-					height: 422rpx;
+						min-width: 100%;
+						min-height: 100%;
 				}
 
 				.image1 {
+					width: 48rpx;
+					height: 48rpx;
 					margin-top: 120rpx;
 				}
 
@@ -349,7 +371,7 @@
 			height: 100rpx;
 			background-color: lightcoral;
 			display: flex;
-			border-top: 3rpx solid #E0E0E0;
+			border-bottom: 3rpx solid #E0E0E0;
 
 			.complete {
 				width: 375rpx;
@@ -380,10 +402,6 @@
 		}
 	}
 
-	.bottom {
-		height: 17rpx;
-		background-color: #E8E8E8;
-	}
 
 	.jdt {
 		height: 6rpx;

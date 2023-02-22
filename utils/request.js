@@ -39,8 +39,8 @@ class Request {
 
 	delete(url, data = {}) {
 		this.method = 'DELETE'
-		this.url = this.baseUrl + url
-		this.data = data
+		const s = '?' + Object.entries(data).map(e => e[0] + '=' + e[1]).join('&')
+		this.url = this.baseUrl + url + s
 		return this._()
 	}
 
@@ -61,6 +61,7 @@ class Request {
 				method: this.method,
 				data: this.data,
 				header: this.header,
+				dataType: this.dataType,
 				success: (res) => {
 					resolve(res)
 				},
@@ -93,11 +94,13 @@ class Request {
 						wx.clearStorage()
 					  return Promise.reject()
 					} else if(res.statusCode !== 200) {
-						const message = res.data.detail || res.data.message
-						uni.showToast({
-					  	title: message,
-					  	icon: 'error'
-						})
+						if(res.data) {
+							const message = res.data.detail || res.data.message
+							uni.showToast({
+							title: message,
+							icon: 'error'
+							})
+						}
 					}
 				}
 			})

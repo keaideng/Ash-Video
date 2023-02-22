@@ -41,13 +41,13 @@
 				</view>
 				<view class="ali">
 					<view>
-						<image src="../../static/微信.png" mode=""></image>
+						<image src="../../static/wx.png" mode=""></image>
 					</view>
 					<view>
 						<image src="../../static/QQ.png" mode=""></image>
 					</view>
 					<view>
-						<image src="../../static/微博.png" mode=""></image>
+						<image src="../../static/wb.png" mode=""></image>
 					</view>
 				</view>
 			</view>

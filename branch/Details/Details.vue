@@ -1,7 +1,7 @@
 <template>
 	<view class="details">
 		<view class="details-Play">
-			<video :src="demandList.videoUrl" controls></video>
+			<video :src="demandList.videoUrl" :danmu-list="danmuList" controls></video>
 		</view>
 		<view class="details-content">
 			<view class="content">
@@ -17,25 +17,31 @@
 				<view class="jj-yh">
 					<view class="yh-tx">
 						<image :src="demandList.user.avatar" mode=""></image>
-						<text>0 粉丝</text>
+						<view class="sp-jj">
+							<text>{{ demandList.title }}</text>
+						</view>
 					</view>
 					<view class="yh-bf">
 						<view class="bf-sl">
 							<image src="../../static/视频.png" mode=""></image>
 							<text>{{ demandList.readCount }}</text>
-							<image src="../../static/img/播放.png" mode=""></image>
-							<text>0</text>
+							<image src="../../static/zd.png" mode="" @click="Like" v-if="!demandList.isLike"></image>
+							<image src="../../static/zd1.png" mode="" @click="Like" v-else></image>
+							<text>{{ demandList.likeCount }}</text>
 						</view>
-						<view class="bf-sc">收藏</view>
+						<!-- <view class="bf-sc">收藏</view> -->
 					</view>
 				</view>
 				<view class="yh-xj">
+					<text>{{ demandList.describe }}</text>
+				</view>
+				<!-- <view class="yh-xj">
 					<view class="xj1">选集</view>
 					<view class="xj2">
 						<text>共0集</text>
 						<image src="../../static/右箭头.png" mode=""></image>
 					</view>
-				</view>
+				</view> -->
 			</view>
 			<!-- 评论 -->
 			<view class="content-pl" v-else>
@@ -45,21 +51,26 @@
 					</view>
 					<view class="comments-fb" @click="publish(demandList.videoId)">发布</view>
 				</view>
-				<view class="pl-reply" v-for="item,index in appList" :key="item.commentId">
+				<view class="pl-reply" v-for="item,index in appList" :key="item.commentId" v-if="!item">
 					<view class="reply-tx">
 						<image :src="item.user.avatar" mode=""></image>
 					</view>
 					<view class="reply-hf">
-						<view class="hf-mz">{{item.user.nickname}}</view>
+						<view class="hf">
+							<view class="hf-mz">{{item.user.nickname}}</view>
+							<view class="sj1">{{ toDate(item.createdAt) }}</view>
+						</view>
+						
+						
 						<view class="hf-nr">
-							<view class="nr-sj">
-								<view class="sj1">{{ toDate(item.createdAt) }}</view>
+							<!-- <view class="nr-sj">
+								
 								<view class="sj2">
 									<image src="../../static/img/点赞 (1).png" mode=""></image>
 									<text>1323</text>
 								</view>
 								<view class="sj3">回复</view>
-							</view>
+							</view> -->
 							<view class="nr-lgm" @click="Replycomments(item.commentId)">{{ item.text }}</view>
 							<view class="nr-rp">
 								<view class="rp">热议</view>
@@ -88,6 +99,9 @@
 						</view>
 					</view>
 				</view>
+				<view class="reply-zw" v-if='demandList'>
+					<text>暂时无评论</text>
+				</view>
 				<view class="pl-comments comments" v-if="sum">
 					<view class="comments-input">
 						<input type="text" v-model="comst">
@@ -107,8 +121,10 @@
 		onShow,
 		onHide
 	} from '@dcloudio/uni-app';
+	import dayjs from "dayjs"
 	import {
 		reactive,
+		ref,
 		toRefs
 	} from 'vue';
 	const state = reactive({
@@ -128,18 +144,26 @@
 		postComts,
 		getReply,
 		postReply,
+		postLike,
+		deleteCancel
 	} from '../../api/modules/upload.js'
+	
+	const danmuList = ref([])
+	
 	// 页面加载
-	onLoad(async (message) => {
-		const videoId = message.videoId
-		const {
-			data
-		} = await VideoDetails({
+	onLoad((message) => {
+		GetData(message.videoId)
+		Onlinedemand(message.videoId)
+		
+	})
+	// 获取数据
+	const GetData = async (videoId) => {
+		const { data } = await VideoDetails({
 			videoId
 		})
 		state.demandList = data.data
-		Onlinedemand(message.videoId)
-	})
+		console.log(data)
+	}
 	// 获取回复评论
 	const Reply = async (commentId) => {
 		const {
@@ -161,6 +185,7 @@
 	const Replycomments = (replyId) => {
 		state.sum = true
 		state.replyId = replyId
+		Onlinedemand(state.demandList.videoId)
 	}
 	const comments = async () => {
 		const {
@@ -174,6 +199,7 @@
 		})
 		state.sum = false
 		state.comst = ''
+		Replycomments(state.replyId)
 	}
 	// 更多回复
 	const dianMore = async (item) => {
@@ -196,20 +222,32 @@
 			})
 		}
 		state.text = ''
+		Onlinedemand(state.demandList.videoId)
 	}
 
 	function toDate(s) {
-		return (new Date(s)).toLocaleString()
+		return dayjs(s).format('YYYY-MM-DD hh:mm:ss')
 	}
-
+	// 点赞
+	const Like = async () => {
+		console.log(state.demandList.videoId)
+		if(!state.demandList.isLike) {
+			await postLike({ videoId: state.demandList.videoId })
+			state.demandList.isLike = 1
+			state.demandList.likeCount += 1
+		} else {
+			await deleteCancel({ videoId: state.demandList.videoId })
+			state.demandList.isLike = 0
+			state.demandList.likeCount  -= 1
+		}
+	}
 	// 页面显示
 	onShow(() => {
-
 	})
 
 	// 页面隐藏
 	onHide(() => {
-
+		
 	})
 
 	// 页面分享(不定义该函数 页面将无法分享)
@@ -278,8 +316,13 @@
 						}
 
 						text {
-							margin-left: 30rpx;
-							color: #A9A5A0;
+							font-size: 32rpx;
+							margin-left: 20rpx;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							-webkit-line-clamp: 2;
+							display: -webkit-box;
+							-webkit-box-orient: vertical;
 						}
 					}
 
@@ -319,11 +362,10 @@
 				.yh-xj {
 					display: flex;
 					height: 170rpx;
-					line-height: 170rpx;
+					margin-top: 20rpx;
 					padding: 0rpx 40rpx;
-					border-bottom: 1rpx solid #f1f1f1;
-					font-size: 38rpx;
-					font-weight: bold;
+					font-size: 28rpx;
+					color: #666;
 
 					.xj1 {
 						flex: 1;
@@ -345,8 +387,8 @@
 				padding: 20rpx;
 
 				.pl-comments {
+					width: 100%;
 					display: flex;
-					height: 100rpx;
 					line-height: 100rpx;
 
 					.comments-input {
@@ -368,6 +410,10 @@
 				.comments {
 					position: fixed;
 					bottom: 0;
+					left: 0;
+					padding: 20rpx;
+					box-sizing: border-box;
+					box-shadow: 0 0 20rpx rgba(0,0,0,0.2);
 
 					input {
 						width: 570rpx;
@@ -377,7 +423,6 @@
 				.pl-reply {
 					display: flex;
 					margin-top: 20rpx;
-
 					.reply-tx {
 						width: 100rpx;
 						height: 100%;
@@ -393,13 +438,22 @@
 					.reply-hf {
 						flex: 1;
 
-						.hf-mz {
-							height: 55rpx;
-							line-height: 55rpx;
-							font-size: 30rpx;
-							color: #FF6699;
+						.hf {
+							display: flex;
+							align-items: center;
+							.hf-mz {
+								flex: 1;
+								height: 55rpx;
+								line-height: 55rpx;
+								font-size: 30rpx;
+								color: #FF6699;
+							}
+							.sj1 {
+								color: #9499a0;
+								font-size: 20rpx;
+							}
+							
 						}
-
 						.hf-nr {
 							view {
 								margin-top: 10rpx;
@@ -415,9 +469,6 @@
 								font-size: 20rpx;
 								display: flex;
 								margin-top: 0rpx;
-								.sj1 {
-									
-								}
 								.sj2 {
 									display: flex;
 									margin-left: 20rpx;
@@ -500,5 +551,11 @@
 				}
 			}
 		}
+		.reply-zw {
+			width: 100%;
+			text-align: center;
+			margin-top: 100rpx;
+		}
+		
 	}
 </style>
