@@ -13,11 +13,11 @@
 							<view class="icon-li">
 								<view class="li1">
 									<image src="../../static/img/bf.png" mode=""></image>
-									<text>123</text>
+									<text>{{ item.readCount }}</text>
 								</view>
 								<view class="li1">
 									<image src="../../static/zd.png" mode=""></image>
-									<text>11</text>
+									<text>{{ item.likeCount }}</text>
 								</view>
 								<view>
 									<image src="../../static/img/Android.png" mode=""></image>
@@ -30,7 +30,7 @@
 			<view class="bar-cz">
 				<view class="" @click="revise(item.videoId)">修改</view>
 				<view class="">{{ lw[item.state] }}</view>
-				<view class="">删除</view>
+				<view class="" @click="adelete(item.videoId)">删除</view>
 			</view>
 		</view>
 		<view class="more">
@@ -56,6 +56,7 @@
 	import {
 		getWorkApi
 	} from '../../api/modules/login'
+	import { Delete } from '../../api/modules/categorize'
 	const WorkList = ref([])
 	const lw = ['草稿', '待审核', '已发布']
 	// 页面加载
@@ -114,6 +115,11 @@
 		uni.navigateTo({
 			url: '/branch/Details/Details?videoId=' + videoId + ''
 		})
+	}
+	// 删除
+	const adelete = async (videoId) => {
+		await Delete({videoId})
+		getWork()
 	}
 	// 页面隐藏
 	onHide(() => {

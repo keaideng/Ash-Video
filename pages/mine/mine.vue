@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="tb">
-			<view @click="xg">
-				<image v-if="!userInfo.avatar" src="../../static/默认头像.png" mode=""></image>
+			<view>
+				<image v-if="!userInfo.avatar" src="../../static/默认头像.png"></image>
 				<image v-else :src="userInfo.avatar" mode=""></image>
 			</view>
 			
@@ -54,7 +54,7 @@
 				<image src="../../static/yjt.png" mode=""></image>
 			</navigator>
 			<navigator class="st-item1">
-				<view>
+				<view @click="xg">
 					<image src="../../static/lsjl.png" mode=""></image>
 					<text>我的设置</text>
 				</view>
@@ -170,12 +170,12 @@ onShareAppMessage(() => {
 	justify-content: space-between;
 	flex-wrap: wrap;
 	border-top: 10px solid #f5f5f4;
-	padding: 40rpx;
 	border-bottom-color: #A9A5A0;
 	.st-item {
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
+		padding: 0 40rpx;
 		height: 80rpx;
 		// background-color: #FB7299;
 		margin-bottom: 20rpx;
@@ -198,6 +198,7 @@ onShareAppMessage(() => {
 	}
 	.st-item1 {
 		display: flex;
+		padding: 0 40rpx;
 		justify-content: space-between;
 		width: 100%;
 		height: 80rpx;
@@ -219,6 +220,7 @@ onShareAppMessage(() => {
 	}
 	.st-item2 {
 		display: flex;
+		padding: 0 40rpx;
 		justify-content: space-between;
 		width: 100%;
 		height: 80rpx;

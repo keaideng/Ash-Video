@@ -19,3 +19,6 @@ export const postDraft = (data) => http.post('/video/draft', data)
 export const putCancel = ({videoId}) => http.put('/video/cancel', {videoId})
 // 发布草稿
 export const pushDraft = ({videoId}) => http.put('/video/push', {videoId})
+
+// 删除视频
+export const Delete = ({ videoId }) => http.delete('/video', { videoId })

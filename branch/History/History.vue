@@ -1,25 +1,26 @@
 <template>
+	<scroll-view scroll-y refresher-enabled :refresher-triggered="refresherTriggered" @refresherrefresh="refresherrefresh" @scrolltolower="scrolltolower" >
 	<!-- 内容栏 -->
 	<view class="content">
-		<view class="content-bar">
+		<view class="content-bar" v-for="item in ListHistory" :key="item.id">
 			<view class="bar-image">
-				<image src="../../static/图1.jpg" mode=""></image>
+				<image :src="item.cover" mode=""></image>
 			</view>
 			<view class="bar-nr">
-				<view class="nr-li">围殴欧文欸认为偶尔五日哦i恶恶肉i恶恶人iewu哦i恶恶哦i肉i人u而我i入俄我i溽热我i日哦额外</view>
+				<view class="nr-li">{{ item.title }}</view>
 				<view class="nr-bf">
 					<view class="icon">
 						<view class="icon-li">
 							<view class="li1">
-								<image src="../../static/img/播放.png" mode=""></image>
-								<text>123</text>
+								<image src="../../static/img/bf.png" mode=""></image>
+								<text>{{ item.likeCount }}</text>
 							</view>
 							<view class="li1">
-								<image src="../../static/img/浏览.png" mode=""></image>
-								<text>11</text>
+								<image src="../../static/zd.png" mode=""></image>
+								<text>{{ item.readCount }}</text>
 							</view>
 							<view>
-								<image src="../../static/img/Android更多 (1).png" mode=""></image>
+								<image src="../../static/img/Android.png" mode=""></image>
 							</view>
 						</view>
 					</view>
@@ -27,6 +28,10 @@
 			</view>
 		</view>
 	</view>
+	<view class="more">
+		{{ lock ? '我是有底线的' : loading ? '正在加载中...' : '下划开始加载' }}
+	</view>
+	</scroll-view>
 </template>
 
 <script setup>
@@ -37,12 +42,46 @@
 		onShow,
 		onHide
 	} from '@dcloudio/uni-app';
-
+	import { ref } from 'vue'
+	import { GetHistory } from '../../api/modules/history'
+	const ListHistory = ref([])
 	// 页面加载
-	onLoad((message) => {
-
+	const page = {
+		pageNumber: 1,
+		pageSize: 6,
+	}
+	onLoad(async (message) => {
+		const { data } = await GetHistory(page)
+		ListHistory.value = data.data
 	})
-
+	// 下拉刷新
+	const refresherTriggered = ref(false)
+	const refresherrefresh = async () => {
+		refresherTriggered.value = true
+		await getWork()
+		refresherTriggered.value = false
+		lock.value = false
+		page.pageNumber = 1
+	}
+	const loading = ref(false)
+	// 上拉加载
+	let lock = ref(false)
+	const scrolltolower = async () => {
+		if(lock.value || loading.value) {
+			return
+		}
+		page.pageNumber ++
+		loading.value = true
+		const {
+			data
+		} = await GetHistory(page)
+		loading.value = false
+		if(!data.data.length) {
+			lock.value = true
+			return
+		}
+		WorkList.value.push(...data.data)
+	}
 	// 页面显示
 	onShow(() => {
 
@@ -60,6 +99,11 @@
 </script>
 
 <style lang="scss">
+	.more {
+		color: #999;
+		padding: 12rpx;
+		text-align: center;
+	}
 	// 内容栏
 	.content {
 		.content-bar {
