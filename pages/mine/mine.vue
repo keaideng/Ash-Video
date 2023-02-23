@@ -2,7 +2,7 @@
 	<view>
 		<view class="tb">
 			<view>
-				<image v-if="!userInfo.avatar" src="../../static/默认头像.png"></image>
+				<image v-if="!userInfo.avatar" src="../../static/默认头像.png" mode=""></image>
 				<image v-else :src="userInfo.avatar" mode=""></image>
 			</view>
 			
@@ -53,8 +53,8 @@
 				</view>
 				<image src="../../static/yjt.png" mode=""></image>
 			</navigator>
-			<navigator class="st-item1">
-				<view @click="xg">
+			<navigator class="st-item1" url="../../branch/modify/modify">
+				<view>
 					<image src="../../static/lsjl.png" mode=""></image>
 					<text>我的设置</text>
 				</view>
@@ -77,11 +77,6 @@ import { getUser } from '../../api/modules/login.js'
 import {reactive,toRefs} from 'vue';
 const userInfo = reactive({
 })
-const xg = () => {
-	uni.navigateTo({
-		url: '/branch/modify/modify'
-	})
-}
 const lw = () => {
 	uni.navigateTo({
 		url: '/branch/Login/Login'
