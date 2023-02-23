@@ -61,7 +61,6 @@
 							<view class="sj1">{{ toDate(item.createdAt) }}</view>
 						</view>
 						
-						
 						<view class="hf-nr">
 							<!-- <view class="nr-sj">
 								
