@@ -23,3 +23,7 @@ export const postLike = ({ videoId }) => http.post('/like', { videoId })
 
 // 取消点赞
 export const deleteCancel = ({ videoId }) => http.delete('/like', { videoId })
+
+// 发送弹幕
+export const postBarrage = (data) => http.post('/bullet',data)
+

@@ -33,7 +33,7 @@
 					<input type="text" placeholder="请填写视频描述" v-model="addList.describe">
 				</view>
 				<!-- 分类 -->
-				<view class="label">
+				<view class="label label1">
 					<view class="uni-title uni-common-pl lab">分类</view>
 					<view class="uni-list">
 						<view class="uni-list-cell">
@@ -46,13 +46,21 @@
 					</view>
 				</view>
 				<!-- 完成 | 删除 -->
+
 				<view class="complete_delete">
-					<!-- 完成 -->
-					<view class="complete" @click="avatar">
-						<text>完成</text>
+					<!-- 草稿 -->
+					<view class="complete" @click="draft">
+						<text>保存草稿</text>
 					</view>
-					<!-- 删除 -->
-					<view class="delete">
+					<!-- 发布 -->
+					<view class="fbu">
+						<text @click="push">立即发布</text>
+					</view>
+					<!-- 取消 -->
+					<view class="delete" v-if="!addList.videoId">
+						<text @click="qx">取消</text>
+					</view>
+					<view class="delete" v-else>
 						<text @click="deletelb">删除</text>
 					</view>
 				</view>
@@ -77,7 +85,7 @@
 	} from 'vue';
 	import {
 		UploadVideo,
-		UploadImage
+		UploadImage,
 	} from '../../utils/upload';
 	import {
 		putRevise,
@@ -86,7 +94,10 @@
 	import {
 		cationApi,
 		submitApi,
-		revisePut
+		revisePut,
+		postDraft,
+		putCancel,
+		pushDraft
 	} from '../../api/modules/categorize'
 	const state = reactive({
 		addList: {
@@ -159,10 +170,14 @@
 		state.sum = e
 	}
 	onLoad(async (message) => {
+		console.log(message.videoId)
 		if (message.videoId) {
+
 			const {
 				data
-			} = await reviseApi(message.videoId)
+			} = await reviseApi({
+				videoId: message.videoId
+			})
 			const res = data.data
 			state.addList = res
 			state.imaUrl = res.coverPreview
@@ -175,9 +190,9 @@
 	// 上传封面
 	const UploadCover = async () => {
 		await image.open()
-		uni.showLoading({  // 显示加载中loading效果 
-		    title: "正在上传封面",
-		    mask: true  //开启蒙版遮罩
+		uni.showLoading({ // 显示加载中loading效果 
+			title: "正在上传封面",
+			mask: true //开启蒙版遮罩
 		});
 		const {
 			path,
@@ -187,26 +202,73 @@
 		state.addList.cover = path
 		state.imaUrl = url
 	}
-	// 提交视频
-	const avatar = async () => {
-		const b = encapsulation()
-		if (b) {
-			if (!addList.videoId) {
-				await submitApi(state.addList)
-			} else {
-				await revisePut(addList.videoId)
-			}
-			uni.switchTab({
-				url: '/pages/mine/mine'
-			})
-			return uni.showToast({
-				title: '上传成功',
-				icon: 'none'
-			})
-			state.addList = {}
-		}
 
+
+	// 保存草稿
+	const revise = async () => {
+		let res
+		if (state.addList.videoId) {
+			const {
+				statusCode
+			} = await revisePut(state.addList)
+			if (statusCode !== 200) return
+			res = await putCancel(state.addList)
+		} else {
+			res = await postDraft(state.addList)
+		}
+		const {
+			statusCode
+		} = res
+		if (statusCode !== 200) {
+			return false
+		}
+		uni.showToast({
+			title: '保存成功'
+		})
+		return true
 	}
+
+	// 立即发布
+	const pushNow = async () => {
+		let res
+		if (state.addList.videoId) {
+			const {
+				statusCode
+			} = await revisePut(state.addList)
+			if (statusCode !== 200) return
+			res = await pushDraft(state.addList)
+		} else {
+			res = await submitApi(state.addList)
+		}
+		const {
+			statusCode
+		} = res
+		if (statusCode !== 200) {
+			return false
+		}
+		uni.showToast({
+			title: '提交成功'
+		})
+		return true
+	}
+
+	// 保存草稿
+	const draft = async () => {
+		if (encapsulation() && revise()) {
+			// TODO 我的作品
+			wx.navigateBack()
+		}
+	}
+
+	// 立即发布
+	const push = async () => {
+		if (encapsulation() && pushNow()) {
+			// TODO 我的作品
+			wx.navigateBack()
+		}
+	}
+
+	// 获取视频地址
 	const fz = (i) => {
 		state.Video = i.slice(11)
 		state.ma = state.Video.slice(-8)
@@ -226,10 +288,17 @@
 		state.addList.videoUrl = path
 		zt.value = 'ed'
 	}
-
 	// 删除
 	const deletelb = async () => {
 		state.addList = {}
+	}
+	// 取消发布
+	const qx = () => {
+		state.addList = {}
+		// TODO 我的作品
+		uni.switchTab({
+			url: '/branch/MyWork/MyWork'
+		})
 	}
 	// 下拉框
 	const selectTaps = async () => {
@@ -237,11 +306,8 @@
 	}
 	const optionTaps = async (e) => {
 		state.shows = false
-		console.log(e)
 	}
 	const bindPickerChange = async (e) => {
-
-		console.log(state.array)
 		const index = e.detail.value
 		state.addList.classify = state.array[index].name
 	}
@@ -293,8 +359,8 @@
 				height: 422rpx;
 
 				.image {
-						min-width: 100%;
-						min-height: 100%;
+					min-width: 100%;
+					min-height: 100%;
 				}
 
 				.image1 {
@@ -314,9 +380,13 @@
 			height: 431rpx;
 			background-color: #FFF;
 
+			.label1 {
+				border-bottom: 0rpx solid #E0E0E0 !important;
+			}
+
 			.label {
 				height: 90rpx;
-				border-bottom: 3rpx solid #E0E0E0;
+				border-bottom: 2rpx solid #E0E0E0;
 				display: flex;
 				line-height: 90rpx;
 
@@ -368,36 +438,28 @@
 		}
 
 		.complete_delete {
-			height: 100rpx;
-			background-color: lightcoral;
 			display: flex;
-			border-bottom: 3rpx solid #E0E0E0;
+			text-align: center;
+
+			view {
+				width: 300rpx;
+				height: 100rpx;
+				line-height: 100rpx;
+				border: rpx solid #f1f1f1;
+				color: #fff;
+			}
 
 			.complete {
-				width: 375rpx;
-				height: 100rpx;
-				background-color: sandybrown;
-				text-align: center;
-				background-color: #FF6699;
+				background-color: #ccc;
+				color: #333;
+			}
 
-				text {
-					line-height: 100rpx;
-					font-size: 36rpx;
-					color: #FFF;
-				}
+			.fbu {
+				background-color: #FF6699;
 			}
 
 			.delete {
-				width: 375rpx;
-				height: 100rpx;
-				background-color: lawngreen;
-				text-align: center;
-				background-color: #FFF;
-
-				text {
-					line-height: 100rpx;
-					font-size: 36rpx;
-				}
+				background-color: red;
 			}
 		}
 	}
