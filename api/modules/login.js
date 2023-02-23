@@ -15,6 +15,9 @@ export const getUser = () => http.get('/user/myInfo')
 // 修改头像
 export const putRevise = ({avatar}) => http.put('/user/avatar', {avatar})
 
+// 修改用户信息
+export const putUser = (data) => http.put('/user/myInfo', data)
+
 // 获取作品
 export const getWorkApi = (data) => http.get('/user/video', data)
 
