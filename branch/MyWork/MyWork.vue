@@ -1,44 +1,51 @@
 <template>
 	<!-- 内容栏 -->
-	<view class="content" v-for="item in WorkList" :key="item.videoId">
-		<view class="content-bar" @click="videoDetails(item.videoId, item.state)" >
-			<view class="bar-image">
-				<image :src="item.cover" mode=""></image>
-			</view>
-			<view class="bar-nr">
-				<view class="nr-li">{{ item.title }}</view>
-				<view class="nr-bf">
-					<view class="icon">
-						<view class="icon-li">
-							<view class="li1">
-								<image src="../../static/img/播放.png" mode=""></image>
-								<text>123</text>
-							</view>
-							<view class="li1">
-								<image src="../../static/img/浏览.png" mode=""></image>
-								<text>11</text>
-							</view>
-							<view>
-								<image src="../../static/img/Android更多 (1).png" mode=""></image>
+	<scroll-view class="main" scroll-y refresher-enabled :refresher-triggered="refresherTriggered" @refresherrefresh="refresherrefresh" @scrolltolower="scrolltolower">
+		<view class="content" v-for="item in WorkList" :key="item.videoId">
+			<view class="content-bar" @click="videoDetails(item.videoId, item.state)">
+				<view class="bar-image">
+					<image :src="item.cover" mode=""></image>
+				</view>
+				<view class="bar-nr">
+					<view class="nr-li">{{ item.title }}</view>
+					<view class="nr-bf">
+						<view class="icon">
+							<view class="icon-li">
+								<view class="li1">
+									<image src="../../static/img/bf.png" mode=""></image>
+									<text>123</text>
+								</view>
+								<view class="li1">
+									<image src="../../static/zd.png" mode=""></image>
+									<text>11</text>
+								</view>
+								<view>
+									<image src="../../static/img/Android.png" mode=""></image>
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+			<view class="bar-cz">
+				<view class="" @click="revise(item.videoId)">修改</view>
+				<view class="">{{ lw[item.state] }}</view>
+				<view class="">删除</view>
+			</view>
 		</view>
-		<view class="bar-cz">
-			<view class="" @click="revise(item.videoId)">修改</view>
-			<view class="">{{ item.state == 1 ? '审核中' : '视频' }}</view>
-			<view class="">删除</view>
+		<view class="more">
+			{{ lock ? '我是有底线的' : loading ? '正在加载中...' : '下划开始加载' }}
 		</view>
-	</view>
+	</scroll-view>
+
 </template>
 
 <script setup>
 	// vue3小程序生命周期函数
 	import {
 		reactive,
-		toRefs
+		toRefs,
+		ref
 	} from 'vue'
 	import {
 		onShareAppMessage,
@@ -49,9 +56,8 @@
 	import {
 		getWorkApi
 	} from '../../api/modules/login'
-	const WorkList = reactive({
-
-	})
+	const WorkList = ref([])
+	const lw = ['草稿', '待审核', '已发布']
 	// 页面加载
 	onLoad((message) => {
 		getWork()
@@ -59,20 +65,52 @@
 	const getWork = async () => {
 		const {
 			data
-		} = await getWorkApi()
-		Object.assign(WorkList, data.data)
+		} = await getWorkApi(page)
+		WorkList.value = data.data
 	}
 	// 页面显示
 	onShow(() => {
 		getWork()
 	})
+	// 下拉刷新
+	const refresherTriggered = ref(false)
+	const refresherrefresh = async () => {
+		refresherTriggered.value = true
+		await getWork()
+		refresherTriggered.value = false
+		lock.value = false
+		page.pageNumber = 1
+	}
+	const loading = ref(false)
+	const page = {
+		pageNumber: 1,
+		pageSize: 6,
+	}
+	// 上拉加载
+	let lock = ref(false)
+	const scrolltolower = async () => {
+		if(lock.value || loading.value) {
+			return
+		}
+		page.pageNumber ++
+		loading.value = true
+		const {
+			data
+		} = await getWorkApi(page)
+		loading.value = false
+		if(!data.data.length) {
+			lock.value = true
+			return
+		}
+		WorkList.value.push(...data.data)
+	}
 	const revise = (videoId) => {
 		uni.navigateTo({
 			url: '/branch/addvideo/addvideo?videoId=' + videoId + ''
 		})
 	}
 	const videoDetails = (videoId, state) => {
-		if (state == 1) return
+		if (state <= 2) return
 		uni.navigateTo({
 			url: '/branch/Details/Details?videoId=' + videoId + ''
 		})
@@ -89,6 +127,16 @@
 </script>
 
 <style lang="scss">
+	.main {
+		height: 100vh;
+		flex: 1;
+		flex-shrink: 0;
+	}
+	.more {
+		color: #999;
+		padding: 12rpx;
+		text-align: center;
+	}
 	// 内容栏
 	.content {
 		margin-top: 20rpx;
@@ -104,6 +152,7 @@
 				height: 100%;
 				border-radius: 25rpx;
 				overflow: hidden;
+
 				image {
 					width: 320rpx;
 					height: 180rpx;

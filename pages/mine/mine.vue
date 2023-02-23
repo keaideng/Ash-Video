@@ -18,42 +18,47 @@
 		<view class="st">
 			<navigator class="st-item" url="../../branch/MyWork/MyWork">
 				<view>
-					<image src="../../static/视频.png" mode=""></image>
+					<image src="../../static/sp.png" mode=""></image>
 					<text>我的作品</text>
 				</view>
-				<text>{{userInfo.videoCount}}个</text>
+				<view class="item1">
+					<text>{{userInfo.videoCount}}个</text>
+					<image src="../../static/yjt.png" mode=""></image>
+				</view>
+				
+				
 			</navigator>
 			<navigator class="st-item1" url="../../branch/Collection/Collection">
 				<view>
-					<image src="../../static/收藏.png" mode=""></image>
+					<image src="../../static/sc.png" mode=""></image>
 					<text>收藏</text>
 				</view>
-				<image src="../../static/右箭头.png" mode=""></image>
+				<image src="../../static/yjt.png" mode=""></image>
 			</navigator>
 			<navigator class="st-item2">
 				<view class="item">
-					<image src="../../static/关注.png" mode=""></image>
+					<image src="../../static/gz.png" mode=""></image>
 					<text>关注</text>
 				</view>
 				<view class="item1">
 					<text>0</text>
-					<image src="../../static/右箭头.png" mode=""></image>
+					<image src="../../static/yjt.png" mode=""></image>
 				</view>
 				
 			</navigator>
 			<navigator class="st-item1" url="../../branch/History/History">
 				<view>
-					<image src="../../static/历史记录.png" mode=""></image>
+					<image src="../../static/lsjl.png" mode=""></image>
 					<text>历史记录</text>
 				</view>
-				<image src="../../static/右箭头.png" mode=""></image>
+				<image src="../../static/yjt.png" mode=""></image>
 			</navigator>
 			<navigator class="st-item1" url="../../branch/modify/modify">
 				<view>
-					<image src="../../static/历史记录.png" mode=""></image>
+					<image src="../../static/lsjl.png" mode=""></image>
 					<text>我的设置</text>
 				</view>
-				<image src="../../static/右箭头.png" mode=""></image>
+				<image src="../../static/yjt.png" mode=""></image>
 			</navigator>
 		</view>
 		<view class="pg" @click="Submission">

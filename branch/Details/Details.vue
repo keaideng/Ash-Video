@@ -1,7 +1,7 @@
 <template>
 	<view class="details">
 		<view class="details-Play">
-			<video :src="demandList.videoUrl" :danmu-list="danmuList" controls></video>
+			<video :src="demandList.videoUrl" enable-danmu :danmu-list="demandList.bulletList" id="vid" controls danmu-btn></video>
 		</view>
 		<view class="details-content">
 			<view class="content">
@@ -23,13 +23,15 @@
 					</view>
 					<view class="yh-bf">
 						<view class="bf-sl">
-							<image src="../../static/视频.png" mode=""></image>
+							<image src="../../static/sp.png" mode=""></image>
 							<text>{{ demandList.readCount }}</text>
 							<image src="../../static/zd.png" mode="" @click="Like" v-if="!demandList.isLike"></image>
 							<image src="../../static/zd1.png" mode="" @click="Like" v-else></image>
 							<text>{{ demandList.likeCount }}</text>
 						</view>
-						<!-- <view class="bf-sc">收藏</view> -->
+						<view class="bf-sc" @click="danmu = true">
+							<image src="../../static/danmu.png" mode=""></image>
+						</view>
 					</view>
 				</view>
 				<view class="yh-xj">
@@ -42,6 +44,14 @@
 						<image src="../../static/右箭头.png" mode=""></image>
 					</view>
 				</view> -->
+				<view class="pl-danmu" v-if="danmu">
+					<view class="pl-comments comments">
+						<view class="comments-input">
+							<input type="text" v-model="state.dm">
+						</view>
+						<view class="comments-fb" @click="barrage">弹幕</view>
+					</view>
+				</view>
 			</view>
 			<!-- 评论 -->
 			<view class="content-pl" v-else>
@@ -60,7 +70,8 @@
 							<view class="hf-mz">{{item.user.nickname}}</view>
 							<view class="sj1">{{ toDate(item.createdAt) }}</view>
 						</view>
-						
+
+
 						<view class="hf-nr">
 							<!-- <view class="nr-sj">
 								
@@ -84,14 +95,14 @@
 							</view>
 							<view class="ments-hf" v-if="item.moreShow">
 								<view v-for="item in item.moreList" :key="item.commentId">
-								<text class="ments-zm">{{ item.user.nickname }}</text>
-								<text class="hf">回复</text>
-								<text class="ments-zm">{{ item.replyUser.nickname }}</text>
-								<text>:</text>
-								<text class="ments-nr">{{ item.text }}</text>
+									<text class="ments-zm">{{ item.user.nickname }}</text>
+									<text class="hf">回复</text>
+									<text class="ments-zm">{{ item.replyUser.nickname }}</text>
+									<text>:</text>
+									<text class="ments-nr">{{ item.text }}</text>
 								</view>
 							</view>
-							
+
 							<view class="more" @click="dianMore(item)" v-if="item.topReply">
 								<txte>更多</txte>
 							</view>
@@ -129,13 +140,17 @@
 	const state = reactive({
 		show: true,
 		sum: false,
-		demandList: {},
+		danmu: false,
+		demandList: {
+			
+		},
 		text: '',
 		replyId: '',
 		comst: '',
 		appList: {},
 		moreShow: false,
-		moreList: {}
+		moreList: {},
+		dm: ''
 	})
 	import {
 		VideoDetails,
@@ -144,20 +159,24 @@
 		getReply,
 		postReply,
 		postLike,
-		deleteCancel
+		deleteCancel,
+		postBarrage
 	} from '../../api/modules/upload.js'
 	
-	const danmuList = ref([])
-	
+	let videoCtx
+
 	// 页面加载
 	onLoad((message) => {
+		videoCtx = wx.createVideoContext('vid')
 		GetData(message.videoId)
 		Onlinedemand(message.videoId)
-		
+
 	})
 	// 获取数据
 	const GetData = async (videoId) => {
-		const { data } = await VideoDetails({
+		const {
+			data
+		} = await VideoDetails({
 			videoId
 		})
 		state.demandList = data.data
@@ -203,7 +222,11 @@
 	// 更多回复
 	const dianMore = async (item) => {
 		item.moreShow = true
-		const { data } = await getReply({commentId: item.commentId})
+		const {
+			data
+		} = await getReply({
+			commentId: item.commentId
+		})
 		item.moreList = data.data
 	}
 	// 发布评论
@@ -230,23 +253,34 @@
 	// 点赞
 	const Like = async () => {
 		console.log(state.demandList.videoId)
-		if(!state.demandList.isLike) {
-			await postLike({ videoId: state.demandList.videoId })
+		if (!state.demandList.isLike) {
+			await postLike({
+				videoId: state.demandList.videoId
+			})
 			state.demandList.isLike = 1
 			state.demandList.likeCount += 1
 		} else {
-			await deleteCancel({ videoId: state.demandList.videoId })
+			await deleteCancel({
+				videoId: state.demandList.videoId
+			})
 			state.demandList.isLike = 0
-			state.demandList.likeCount  -= 1
+			state.demandList.likeCount -= 1
 		}
 	}
+	// 发送弹幕
+	const barrage = async () => {
+		videoCtx.sendDanmu({
+			text: state.dm,
+    }	)
+		const res = await postBarrage({ videoId: state.demandList.videoId, text: state.dm, time: 1 })
+		state.dm =''
+	}
 	// 页面显示
-	onShow(() => {
-	})
+	onShow(() => {})
 
 	// 页面隐藏
 	onHide(() => {
-		
+
 	})
 
 	// 页面分享(不定义该函数 页面将无法分享)
@@ -260,6 +294,7 @@
 		sum,
 		comst,
 		appList,
+		danmu
 	} = toRefs(state)
 </script>
 
@@ -337,8 +372,8 @@
 
 							image {
 								width: 40rpx;
-								height: 30rpx;
-								margin-top: 26rpx;
+								height: 40rpx;
+								margin-top: 20rpx;
 								margin-left: 10rpx;
 							}
 
@@ -350,10 +385,14 @@
 
 						.bf-sc {
 							text-align: center;
-							width: 110rpx;
-							background-color: #FB7299;
+							width: 50rpx;
 							border-radius: 15rpx;
 							color: #fff;
+
+							image {
+								width: 40rpx;
+								height: 40rpx;
+							}
 						}
 					}
 				}
@@ -384,44 +423,10 @@
 
 			.content-pl {
 				padding: 20rpx;
-
-				.pl-comments {
-					width: 100%;
-					display: flex;
-					line-height: 100rpx;
-
-					.comments-input {
-						flex: 1;
-						padding: 30rpx 10rpx;
-						background-color: #f1f2f3;
-
-					}
-
-					.comments-fb {
-						text-align: center;
-						width: 120rpx;
-						height: 100rpx;
-						background-color: #00AEEC;
-						color: #fff;
-					}
-				}
-
-				.comments {
-					position: fixed;
-					bottom: 0;
-					left: 0;
-					padding: 20rpx;
-					box-sizing: border-box;
-					box-shadow: 0 0 20rpx rgba(0,0,0,0.2);
-
-					input {
-						width: 570rpx;
-					}
-				}
-
 				.pl-reply {
 					display: flex;
 					margin-top: 20rpx;
+
 					.reply-tx {
 						width: 100rpx;
 						height: 100%;
@@ -440,6 +445,7 @@
 						.hf {
 							display: flex;
 							align-items: center;
+
 							.hf-mz {
 								flex: 1;
 								height: 55rpx;
@@ -447,12 +453,14 @@
 								font-size: 30rpx;
 								color: #FF6699;
 							}
+
 							.sj1 {
 								color: #9499a0;
 								font-size: 20rpx;
 							}
-							
+
 						}
+
 						.hf-nr {
 							view {
 								margin-top: 10rpx;
@@ -468,6 +476,7 @@
 								font-size: 20rpx;
 								display: flex;
 								margin-top: 0rpx;
+
 								.sj2 {
 									display: flex;
 									margin-left: 20rpx;
@@ -512,11 +521,13 @@
 							margin-top: 20rpx;
 							padding: 20rpx;
 							background-color: #f1f1f1;
+
 							.more {
-							txte {
-								color: #9499a0;
+								txte {
+									color: #9499a0;
+								}
 							}
-							}
+
 							.ments {
 								.ments-zm {
 									color: #00AEEC;
@@ -550,10 +561,48 @@
 				}
 			}
 		}
+
 		.reply-zw {
 			width: 100%;
 			text-align: center;
 			margin-top: 100rpx;
+		}
+		.pl-danmu {
+			padding: 20rpx;
+			
+		}
+		.pl-comments {
+			width: 100%;
+			display: flex;
+			line-height: 100rpx;
+
+			.comments-input {
+				flex: 1;
+				padding: 30rpx 10rpx;
+				background-color: #f1f2f3;
+
+			}
+
+			.comments-fb {
+				text-align: center;
+				width: 120rpx;
+				height: 100rpx;
+				background-color: #00AEEC;
+				color: #fff;
+			}
+		}
+		.comments {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			padding: 20rpx;
+			box-sizing: border-box;
+			background-color: #ffffff;
+			box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.2);
+		
+			input {
+				width: 570rpx;
+			}
 		}
 		
 	}
