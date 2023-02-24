@@ -18,7 +18,7 @@
 		<view class="st">
 			<navigator class="st-item" url="../../branch/MyWork/MyWork">
 				<view>
-					<image src="../../static/sp.png" mode=""></image>
+					<image src="../../static/image/zp.png" mode=""></image>
 					<text>我的作品</text>
 				</view>
 				<view class="item1">
@@ -30,15 +30,15 @@
 			</navigator>
 			<navigator class="st-item1" url="../../branch/Collection/Collection">
 				<view>
-					<image src="../../static/zd.png" mode=""></image>
-					<text>点赞</text>
+					<image src="../../static/image/dz.png" mode=""></image>
+					<text>我的点赞</text>
 				</view>
 				<image src="../../static/yjt.png" mode=""></image>
 			</navigator>
-			<navigator class="st-item2">
+			<navigator class="st-item1">
 				<view class="item">
-					<image src="../../static/gz.png" mode=""></image>
-					<text>关注</text>
+					<image src="../../static/image/gz.png" mode=""></image>
+					<text>我的关注</text>
 				</view>
 				<view class="item1">
 					<text>0</text>
@@ -48,14 +48,14 @@
 			</navigator>
 			<navigator class="st-item1" url="../../branch/History/History">
 				<view>
-					<image src="../../static/lsjl.png" mode=""></image>
+					<image src="../../static/image/ls.png" mode=""></image>
 					<text>历史记录</text>
 				</view>
 				<image src="../../static/yjt.png" mode=""></image>
 			</navigator>
 			<navigator class="st-item1" url="../../branch/modify/modify">
 				<view>
-					<image src="../../static/lsjl.png" mode=""></image>
+					<image src="../../static/image/sz.png" mode=""></image>
 					<text>我的设置</text>
 				</view>
 				<image src="../../static/yjt.png" mode=""></image>
@@ -178,9 +178,9 @@ onShareAppMessage(() => {
 		view {
 			display: flex;
 			image {
-				margin-top: 26rpx;
-				width: 30rpx;
-				height: 30rpx;
+				margin-top: 20rpx;
+				width: 40rpx;
+				height: 40rpx;
 			}
 			text {
 				margin-left: 30rpx;
@@ -200,6 +200,7 @@ onShareAppMessage(() => {
 		// background-color: #FB7299;
 		margin-bottom: 20rpx;
 		line-height: 80rpx;
+		color: #A9A5A0;
 		view {
 			display: flex;
 			text {
@@ -208,40 +209,10 @@ onShareAppMessage(() => {
 			}
 		}
 		image {
-			margin-top: 26rpx;
-			width: 30rpx;
-			height: 30rpx;
+			margin-top: 20rpx;
+			width: 40rpx;
+			height: 40rpx;
 		}
-	}
-	.st-item2 {
-		display: flex;
-		padding: 0 40rpx;
-		justify-content: space-between;
-		width: 100%;
-		height: 80rpx;
-		// background-color: #FB7299;
-		margin-bottom: 20rpx;
-		line-height: 80rpx;
-		image {
-			margin-top: 26rpx;
-			width: 30rpx;
-			height: 30rpx;
-		}
-		.item {
-			display: flex;
-			text {
-				margin-left: 30rpx;
-				color: #000;
-			}
-		}
-		.item1 {
-			display: flex;
-			text {
-				margin-right: 10rpx;
-				color: #A9A5A0;
-			}
-		}
-		
 	}
 }
 .pg{

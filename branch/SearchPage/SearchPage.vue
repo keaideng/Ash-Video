@@ -74,7 +74,7 @@
 	// 页面加载
 	onLoad((message) => {
 		state.addList.keyWord = message.name
-		if(message.videoId) {
+		if(message.name) {
 			search()
 		}
 	})
@@ -181,7 +181,6 @@
 
 				.nr-li {
 					overflow: hidden;
-					height: 80rpx;
 					text-overflow: ellipsis;
 					-webkit-line-clamp: 2;
 					display: -webkit-box;
