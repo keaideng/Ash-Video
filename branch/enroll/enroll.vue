@@ -109,8 +109,9 @@
 				clearInterval(id)
 			}
 		}, 1000)
-		const res = await CaptchaApi(state.ListAdd.phone)
-		state.ListAdd.code = res.data.code
+		const { data } = await CaptchaApi(state.ListAdd.phone)
+		console.log(data.code)
+		// state.ListAdd.code = res.data.code
 	}
 	// 校验封装
 	const encapsulation = () => {
@@ -265,9 +266,9 @@
 					border-radius: 15rpx;
 
 					input {
-						position: absolute;
-						top: 20rpx;
-						left: 40rpx;
+						width: 100%;
+						height: 100%;
+						padding: 0rpx 40rpx;
 					}
 				}
 			}

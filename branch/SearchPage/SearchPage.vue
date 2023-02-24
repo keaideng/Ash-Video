@@ -74,7 +74,7 @@
 	// 页面加载
 	onLoad((message) => {
 		state.addList.keyWord = message.name
-		if(message.name) {
+		if(message.videoId) {
 			search()
 		}
 	})
@@ -84,7 +84,6 @@
 		} = await SearchApi(state.addList)
 		state.searchList = data.data
 		this.onSearchBtnClick()
-		console.log(state.searchList)
 	}
 	const tzsp = (videoId) => {
 		uni.navigateTo({
@@ -136,7 +135,11 @@
 				padding: 0 12rpx;
 				display: flex;
 				align-items: center;
-
+				input {
+					width: 100%;
+					height: 100%;
+					padding: 0rpx 0rpx;
+				}
 				icon {
 					margin: 0 12rpx;
 				}

@@ -1,7 +1,8 @@
 <template>
 	<view class="details">
 		<view class="details-Play">
-			<video :src="demandList.videoUrl" enable-danmu :danmu-list="demandList.bulletList" id="vid" controls danmu-btn></video>
+			<video :src="demandList.videoUrl" @timeupdate="timeUpdate" enable-danmu :danmu-list="demandList.bulletList"
+				id="vid" controls danmu-btn></video>
 		</view>
 		<view class="details-content">
 			<view class="content">
@@ -142,7 +143,7 @@
 		sum: false,
 		danmu: false,
 		demandList: {
-			
+
 		},
 		text: '',
 		replyId: '',
@@ -162,7 +163,7 @@
 		deleteCancel,
 		postBarrage
 	} from '../../api/modules/upload.js'
-	
+
 	let videoCtx
 
 	// 页面加载
@@ -180,7 +181,6 @@
 			videoId
 		})
 		state.demandList = data.data
-		console.log(data)
 	}
 	// 获取回复评论
 	const Reply = async (commentId) => {
@@ -232,7 +232,13 @@
 	// 发布评论
 	const publish = async (videoId) => {
 		const text = state.text
-		if (text) {
+		const token = uni.getStorageSync('authorization')
+		if (!token) {
+			return uni.showToast({
+				title: '未登录',
+				icon: 'error'
+			})
+		} else if (text) {
 			await postComts({
 				videoId,
 				text
@@ -252,7 +258,13 @@
 	}
 	// 点赞
 	const Like = async () => {
-		console.log(state.demandList.videoId)
+		const token = uni.getStorageSync('authorization')
+		if (!token) {
+			return uni.showToast({
+				title: '未登录',
+				icon: 'error'
+			})
+		} else
 		if (!state.demandList.isLike) {
 			await postLike({
 				videoId: state.demandList.videoId
@@ -267,13 +279,30 @@
 			state.demandList.likeCount -= 1
 		}
 	}
+	let currentTime = 0
+	const timeUpdate = (e) => {
+		currentTime = e.detail.currentTime
+	}
 	// 发送弹幕
 	const barrage = async () => {
-		videoCtx.sendDanmu({
-			text: state.dm,
-    }	)
-		const res = await postBarrage({ videoId: state.demandList.videoId, text: state.dm, time: 1 })
-		state.dm =''
+		const token = uni.getStorageSync('authorization')
+		if (!token) {
+			return uni.showToast({
+				title: '未登录',
+				icon: 'error'
+			})
+		} else {
+			videoCtx.sendDanmu({
+				text: state.dm
+			})
+			const res = await postBarrage({
+				videoId: state.demandList.videoId,
+				text: state.dm,
+				time: Math.floor(currentTime)
+			})
+			state.dm = ''
+		}
+
 	}
 	// 页面显示
 	onShow(() => {})
@@ -423,6 +452,7 @@
 
 			.content-pl {
 				padding: 20rpx;
+
 				.pl-reply {
 					display: flex;
 					margin-top: 20rpx;
@@ -567,18 +597,20 @@
 			text-align: center;
 			margin-top: 100rpx;
 		}
+
 		.pl-danmu {
 			padding: 20rpx;
-			
+
 		}
+
 		.pl-comments {
 			width: 100%;
 			display: flex;
-			line-height: 100rpx;
+			line-height: 120rpx;
 
 			.comments-input {
 				flex: 1;
-				padding: 30rpx 10rpx;
+				padding: 40rpx 10rpx;
 				background-color: #f1f2f3;
 
 			}
@@ -586,11 +618,12 @@
 			.comments-fb {
 				text-align: center;
 				width: 120rpx;
-				height: 100rpx;
+				height: 120rpx;
 				background-color: #00AEEC;
 				color: #fff;
 			}
 		}
+
 		.comments {
 			position: fixed;
 			bottom: 0;
@@ -599,11 +632,11 @@
 			box-sizing: border-box;
 			background-color: #ffffff;
 			box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.2);
-		
+
 			input {
 				width: 570rpx;
 			}
 		}
-		
+
 	}
 </style>

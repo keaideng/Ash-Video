@@ -2,7 +2,7 @@
 	<!-- 内容栏 -->
 	<scroll-view class="main" scroll-y refresher-enabled :refresher-triggered="refresherTriggered" @refresherrefresh="refresherrefresh" @scrolltolower="scrolltolower">
 		<view class="content" v-for="item in WorkList" :key="item.videoId">
-			<view class="content-bar" @click="videoDetails(item.videoId, item.state)">
+			<view class="content-bar" @click="videoDetails(item)">
 				<view class="bar-image">
 					<image :src="item.cover" mode=""></image>
 				</view>
@@ -111,8 +111,8 @@
 			url: '/branch/addvideo/addvideo?videoId=' + videoId + ''
 		})
 	}
-	const videoDetails = (videoId, state) => {
-		if (state <= 2) return
+	const videoDetails = ({videoId, state}) => {
+		if (state < 2) return
 		uni.navigateTo({
 			url: '/branch/Details/Details?videoId=' + videoId + ''
 		})

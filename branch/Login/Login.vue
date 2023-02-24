@@ -186,9 +186,9 @@
 					font-size: 26rpx;
 
 					input {
-						position: absolute;
-						top: 20rpx;
-						left: 40rpx;
+						width: 100%;
+						height: 100%;
+						padding: 0rpx 40rpx;
 					}
 				}
 			}
