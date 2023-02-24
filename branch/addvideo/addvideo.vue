@@ -206,16 +206,24 @@
 
 	// 保存草稿
 	const revise = async () => {
+		uni.showLoading({ // 显示加载中loading效果
+			title: "正在提交",
+			mask: true //开启蒙版遮罩
+		});
 		let res
 		if (state.addList.videoId) {
 			const {
 				statusCode
 			} = await revisePut(state.addList)
-			if (statusCode !== 200) return
+			if (statusCode !== 200) {
+				uni.hideLoading()
+				return
+			}
 			res = await putCancel(state.addList)
 		} else {
 			res = await postDraft(state.addList)
 		}
+		uni.hideLoading()
 		const {
 			statusCode
 		} = res
@@ -230,16 +238,24 @@
 
 	// 立即发布
 	const pushNow = async () => {
+		uni.showLoading({ // 显示加载中loading效果 
+					title: "正在发布",
+					mask: true //开启蒙版遮罩
+				});
 		let res
 		if (state.addList.videoId) {
 			const {
 				statusCode
 			} = await revisePut(state.addList)
-			if (statusCode !== 200) return
+			if (statusCode !== 200) {
+				uni.hideLoading()
+				return
+			}
 			res = await pushDraft(state.addList)
 		} else {
 			res = await submitApi(state.addList)
 		}
+		uni.hideLoading()
 		const {
 			statusCode
 		} = res

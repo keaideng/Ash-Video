@@ -67,6 +67,7 @@
 		const {
 			data
 		} = await getWorkApi(page)
+		if(data.total === data.data.length) lock.value = true
 		WorkList.value = data.data
 	}
 	// 页面显示

@@ -30,8 +30,8 @@
 			</navigator>
 			<navigator class="st-item1" url="../../branch/Collection/Collection">
 				<view>
-					<image src="../../static/sc.png" mode=""></image>
-					<text>收藏</text>
+					<image src="../../static/zd.png" mode=""></image>
+					<text>点赞</text>
 				</view>
 				<image src="../../static/yjt.png" mode=""></image>
 			</navigator>

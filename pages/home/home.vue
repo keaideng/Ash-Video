@@ -80,8 +80,10 @@
 	const Video = async () => {
 		loading.value = true
 		const { data } = await getFetchApi(page)
+		
 		state.addList = data
 		loading.value = false
+		if(data.total === data.data.length) lock.value = true 
 		return data
 	}
 	const tzsp = (videoId) => {
@@ -135,7 +137,8 @@
 	}
 	// 页面显示
 	onShow(() => {
-		
+		carousel()
+		Video()
 	})
 
 	// 页面隐藏

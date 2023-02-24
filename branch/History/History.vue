@@ -1,5 +1,5 @@
 <template>
-	<scroll-view scroll-y refresher-enabled :refresher-triggered="refresherTriggered" @refresherrefresh="refresherrefresh" @scrolltolower="scrolltolower" >
+	<scroll-view class="lw" scroll-y refresher-enabled :refresher-triggered="refresherTriggered" @refresherrefresh="refresherrefresh" @scrolltolower="scrolltolower" >
 	<!-- 内容栏 -->
 	<view class="content">
 		<view class="content-bar" v-for="item in ListHistory" :key="item.id">
@@ -51,14 +51,19 @@
 		pageSize: 6,
 	}
 	onLoad(async (message) => {
-		const { data } = await GetHistory(page)
-		ListHistory.value = data.data
+		xfq()
 	})
+	const xfq = async () => {
+		const { data } = await GetHistory(page)
+		if(data.total === data.data.length) lock.value = true
+		ListHistory.value = data.data
+		
+	}
 	// 下拉刷新
 	const refresherTriggered = ref(false)
 	const refresherrefresh = async () => {
 		refresherTriggered.value = true
-		await getWork()
+		await xfq()
 		refresherTriggered.value = false
 		lock.value = false
 		page.pageNumber = 1
@@ -99,6 +104,9 @@
 </script>
 
 <style lang="scss">
+	.lw {
+		height: 100vh;
+	}
 	.more {
 		color: #999;
 		padding: 12rpx;
