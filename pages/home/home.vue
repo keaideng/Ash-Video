@@ -83,7 +83,7 @@
 		
 		state.addList = data
 		loading.value = false
-		if(data.total === data.data.length) lock.value = true 
+		if(data.total === data.length) lock.value = true 
 		return data
 	}
 	const tzsp = (videoId) => {
@@ -95,11 +95,11 @@
 	// 下拉刷新
 	const refresherTriggered = ref(false)
 	const refresherrefresh = async () => {
+		page.pageNumber = 1
 		refresherTriggered.value = true
 		await Promise.all([carousel(), Video()])
 		refresherTriggered.value = false
 		lock.value = false
-		page.pageNumber = 1
 	}
 	const loading = ref(false)
 	// 上拉加载

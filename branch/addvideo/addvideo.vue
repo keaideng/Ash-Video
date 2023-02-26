@@ -461,7 +461,6 @@
 				width: 300rpx;
 				height: 100rpx;
 				line-height: 100rpx;
-				border: rpx solid #f1f1f1;
 				color: #fff;
 			}
 

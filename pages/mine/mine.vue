@@ -2,7 +2,7 @@
 	<view>
 		<view class="tb">
 			<view>
-				<image v-if="!userInfo.avatar" src="../../static/默认头像.png" mode=""></image>
+				<image v-if="!userInfo.avatar" src="../../static/mrtx.png" mode=""></image>
 				<image v-else :src="userInfo.avatar" mode=""></image>
 			</view>
 			
@@ -16,7 +16,7 @@
 			</view>
 		</view>
 		<view class="st">
-			<navigator class="st-item" url="../../branch/MyWork/MyWork">
+			<navigator class="st-item" @click="wdzp('/branch/MyWork/MyWork')">
 				<view>
 					<image src="../../static/image/zp.png" mode=""></image>
 					<text>我的作品</text>
@@ -28,12 +28,14 @@
 				
 				
 			</navigator>
-			<navigator class="st-item1" url="../../branch/Collection/Collection">
+			<navigator class="st-item1" @click="wdzp('branch/Collection/Collection')">
 				<view>
 					<image src="../../static/image/dz.png" mode=""></image>
 					<text>我的点赞</text>
 				</view>
-				<image src="../../static/yjt.png" mode=""></image>
+				<view class="item1">
+					<image src="../../static/yjt.png" mode=""></image>
+				</view>
 			</navigator>
 			<navigator class="st-item1">
 				<view class="item">
@@ -46,26 +48,30 @@
 				</view>
 				
 			</navigator>
-			<navigator class="st-item1" url="../../branch/History/History">
+			<navigator class="st-item1" @click="wdzp('branch/History/History')">
 				<view>
 					<image src="../../static/image/ls.png" mode=""></image>
 					<text>历史记录</text>
 				</view>
-				<image src="../../static/yjt.png" mode=""></image>
+				<view class="item1">
+					<image src="../../static/yjt.png" mode=""></image>
+				</view>
 			</navigator>
-			<navigator class="st-item1" url="../../branch/modify/modify">
+			<navigator class="st-item1" @click="wdzp('branch/modify/modify')">
 				<view>
 					<image src="../../static/image/sz.png" mode=""></image>
 					<text>我的设置</text>
 				</view>
-				<image src="../../static/yjt.png" mode=""></image>
+				<view class="item1">
+					<image src="../../static/yjt.png" mode=""></image>
+				</view>
 			</navigator>
 		</view>
 		<view class="pg" @click="Submission">
 			<button>立即投稿</button>
 		</view>
-		<view class="tuichu" @click="quit">
-			<text>退出登录</text>
+		<view class="tuichu" v-if="userInfo.nickname">
+			<text @click="quit">退出登录</text>
 		</view>
 	</view>
 </template>
@@ -82,6 +88,20 @@ const lw = () => {
 		url: '/branch/Login/Login'
 	})
 }
+
+const wdzp = (url) => {
+	const token = uni.getStorageSync('authorization')
+	if (!token) {
+		return uni.showToast({
+			title: '未登录',
+			icon: 'error'
+		})
+	} else {
+		uni.navigateTo({
+			url: url
+		})
+	}
+}
 const getUserAdd = async () => {
 	const res= await getUser()
 	if(res.statusCode !== 200) {
@@ -89,12 +109,11 @@ const getUserAdd = async () => {
 		return 
 	}
 	Object.assign(userInfo, res.data)
-	console.log(userInfo)
 }
 
 const quit = () => {
-	userInfo.avatar = ''
 	wx.clearStorage()
+	userInfo.avatar = ''
 	getUserAdd()
 }
 
@@ -172,19 +191,27 @@ onShareAppMessage(() => {
 		width: 100%;
 		padding: 0 40rpx;
 		height: 80rpx;
-		// background-color: #FB7299;
 		margin-bottom: 20rpx;
 		line-height: 80rpx;
 		view {
 			display: flex;
+			align-items: center;
 			image {
-				margin-top: 20rpx;
 				width: 40rpx;
 				height: 40rpx;
 			}
 			text {
 				margin-left: 30rpx;
 				color: #000;
+				font-size: 35rpx;
+			}
+		}
+		.item1 {
+			display: flex;
+			image {
+				width: 30rpx;
+				height: 30rpx;
+				margin-left: 10rpx;
 			}
 		}
 		text {
@@ -197,21 +224,30 @@ onShareAppMessage(() => {
 		justify-content: space-between;
 		width: 100%;
 		height: 80rpx;
-		// background-color: #FB7299;
 		margin-bottom: 20rpx;
 		line-height: 80rpx;
 		color: #A9A5A0;
 		view {
 			display: flex;
+			align-items: center;
 			text {
 				margin-left: 30rpx;
+				font-size: 35rpx;
 				color: #000;
 			}
 		}
 		image {
-			margin-top: 20rpx;
+			// margin-top: 20rpx;
 			width: 40rpx;
 			height: 40rpx;
+		}
+		.item1 {
+			display: flex;
+			image {
+				width: 30rpx;
+				height: 30rpx;
+				margin-left: 10rpx;
+			}
 		}
 	}
 }
@@ -229,9 +265,13 @@ onShareAppMessage(() => {
 }
 .tuichu {
 	position: absolute;
-	width: 100%;
 	text-align: center;
+	width: 200rpx;
+	height: 100rpx;
+	line-height: 100rpx;
+	left: 38%;
 	bottom: 50rpx;
 	color: #A9A5A0;
+	// background-color: #FB7299;
 }
 </style>

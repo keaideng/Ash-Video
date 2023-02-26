@@ -3,7 +3,7 @@
 	<!-- 内容栏 -->
 	<view class="content">
 		<view class="content-bar" v-for="item in ListHistory" :key="item.id">
-			<view class="bar-image">
+			<view class="bar-image" @click="zha(item.videoId)">
 				<image :src="item.cover" mode=""></image>
 			</view>
 			<view class="bar-nr">
@@ -48,7 +48,7 @@
 	// 页面加载
 	const page = {
 		pageNumber: 1,
-		pageSize: 6,
+		pageSize: 10,
 	}
 	onLoad(async (message) => {
 		xfq()
@@ -62,11 +62,12 @@
 	// 下拉刷新
 	const refresherTriggered = ref(false)
 	const refresherrefresh = async () => {
+		page.pageNumber = 1
 		refresherTriggered.value = true
 		await xfq()
 		refresherTriggered.value = false
 		lock.value = false
-		page.pageNumber = 1
+		
 	}
 	const loading = ref(false)
 	// 上拉加载
@@ -91,7 +92,11 @@
 	onShow(() => {
 
 	})
-
+	const zha = (videoId) => {
+		uni.navigateTo({
+					url: '/branch/Details/Details?videoId=' + videoId + ''
+				})
+	}
 	// 页面隐藏
 	onHide(() => {
 

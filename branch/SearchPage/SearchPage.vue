@@ -29,7 +29,7 @@
 									<text>{{ item.readCount }}</text>
 								</view>
 								<view class="li1">
-									<image src="../../static/img/dz.png" mode=""></image>
+									<image src="../../static/zd.png" mode=""></image>
 									<text>{{ item.likeCount }}</text>
 								</view>
 								<view>
@@ -76,6 +76,9 @@
 		state.addList.keyWord = message.name
 		if(message.name) {
 			search()
+			
+		} else {
+			state.firstFocus = true
 		}
 	})
 	const search = async () => {
@@ -92,7 +95,6 @@
 	}
 	// 页面显
 	onShow(() => {
-		state.firstFocus = true
 	})
 
 	// 页面隐藏
