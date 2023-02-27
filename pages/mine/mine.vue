@@ -28,7 +28,7 @@
 				
 				
 			</navigator>
-			<navigator class="st-item1" @click="wdzp('branch/Collection/Collection')">
+			<navigator class="st-item1" @click="wdzp('/branch/Collection/Collection')">
 				<view>
 					<image src="../../static/image/dz.png" mode=""></image>
 					<text>我的点赞</text>
@@ -48,7 +48,7 @@
 				</view>
 				
 			</navigator>
-			<navigator class="st-item1" @click="wdzp('branch/History/History')">
+			<navigator class="st-item1" @click="wdzp('/branch/History/History')">
 				<view>
 					<image src="../../static/image/ls.png" mode=""></image>
 					<text>历史记录</text>
@@ -57,7 +57,7 @@
 					<image src="../../static/yjt.png" mode=""></image>
 				</view>
 			</navigator>
-			<navigator class="st-item1" @click="wdzp('branch/modify/modify')">
+			<navigator class="st-item1" @click="wdzp('/branch/modify/modify')">
 				<view>
 					<image src="../../static/image/sz.png" mode=""></image>
 					<text>我的设置</text>
@@ -67,7 +67,7 @@
 				</view>
 			</navigator>
 		</view>
-		<view class="pg" @click="Submission">
+		<view class="pg" @click="wdzp('/branch/addvideo/addvideo')">
 			<button>立即投稿</button>
 		</view>
 		<view class="tuichu" v-if="userInfo.nickname">
@@ -117,12 +117,6 @@ const quit = () => {
 	getUserAdd()
 }
 
-// 投稿
-const Submission = () => {
-	uni.navigateTo({
-		url: '/branch/addvideo/addvideo'
-	})
-}
 // 页面加载
 onLoad((message) => {
 	

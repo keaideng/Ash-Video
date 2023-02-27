@@ -8,14 +8,14 @@
 		<view class="login-in">
 			<view class="in-bt">欢迎回来</view>
 			<view class="search-nav">
-				<navigator>
+				<view class="view">
 					<input type="text" placeholder="手机号" v-model="formList.phone" maxlength="11"/>
-				</navigator>
+				</view>
 			</view>
 			<view class="search-nav">
-				<navigator>
+				<view class="view">
 					<input type="password" placeholder="请输入密码" v-model="formList.password" maxlength="16" />
-				</navigator>
+				</view>
 			</view>
 			<!-- 按钮 -->
 			<view class="in-button" @click="AddList">
@@ -177,7 +177,7 @@
 				color: #656771;
 				margin-top: 40rpx;
 
-				navigator {
+				.view {
 					position: relative;
 					flex: 1;
 					height: 80rpx;

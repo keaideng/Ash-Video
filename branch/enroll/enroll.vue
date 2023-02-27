@@ -8,25 +8,25 @@
 		<view class="login-in">
 			<view class="in-bt">注册</view>
 			<view class="search-nav">
-				<navigator>
+				<view class="view">
 					<input type="text" placeholder="昵称" v-model="ListAdd.nickname" maxlength="16" />
-				</navigator>
+				</view>
 			</view>
 			<view class="search-nav">
-				<navigator>
+				<view class="view">
 					<input type="text" placeholder="手机号" v-model="ListAdd.phone" maxlength="11" />
-				</navigator>
+				</view>
 			</view>
 			<view class="search-nav">
-				<navigator>
+				<view class="view">
 					<input type="text" placeholder="获取验证码" v-model="ListAdd.code" maxlength="6" />
-				</navigator>
+				</view>
 				<view :class="{ yxm : show }" class="nav-yzm" @click="Captcha"> {{ !show ? '验证码' : sum + '秒' }} </view>
 			</view>
 			<view class="search-nav">
-				<navigator>
+				<view class="view">
 					<input type="password" placeholder="请输入密码" v-model="ListAdd.password" maxlength="16" />
-				</navigator>
+				</view>
 			</view>
 			<!-- 按钮 -->
 			<view class="in-button" @click="LoginAdd">
@@ -256,7 +256,7 @@
 					border-left: 1rpx solid #ccc;
 				}
 
-				navigator {
+				.view {
 					position: relative;
 					flex: 1;
 					height: 80rpx;

@@ -57,8 +57,8 @@
 						<text @click="push">立即发布</text>
 					</view>
 					<!-- 取消 -->
-					<view class="delete" v-if="!addList.videoId">
-						<text @click="qx">取消</text>
+					<view class="delete" v-if="!addList.videoId" @click="qx">
+						<text>取消</text>
 					</view>
 					<view class="delete" v-else>
 						<text @click="deletelb">删除</text>
@@ -312,9 +312,9 @@
 	const qx = () => {
 		state.addList = {}
 		// TODO 我的作品
-		uni.switchTab({
+		uni.navigateBack({
 			url: '/branch/MyWork/MyWork'
-		})
+		}) 
 	}
 	// 下拉框
 	const selectTaps = async () => {
