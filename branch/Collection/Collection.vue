@@ -13,11 +13,11 @@
 						<view class="icon-li">
 							<view class="li1">
 								<image src="../../static/img/bf.png" mode=""></image>
-								<text>{{ item.likeCount }}</text>
+								<text>{{ item.readCount }}</text>
 							</view>
 							<view class="li1">
 								<image src="../../static/zd.png" mode=""></image>
-								<text>{{ item.readCount }}</text>
+								<text>{{ item.likeCount }}</text>
 							</view>
 							<view>
 								<image src="../../static/img/Android.png" mode=""></image>
