@@ -139,7 +139,6 @@
 
 				.nr-li {
 					overflow: hidden;
-					height: 80rpx;
 					text-overflow: ellipsis;
 					-webkit-line-clamp: 2;
 					display: -webkit-box;

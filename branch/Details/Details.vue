@@ -143,7 +143,7 @@
 		sum: false,
 		danmu: false,
 		demandList: {
-
+		user: {}
 		},
 		text: '',
 		replyId: '',

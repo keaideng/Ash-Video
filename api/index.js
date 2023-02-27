@@ -15,7 +15,7 @@ $http.beforeRequest = function(req) {
 // 配置请求后处理器
 $http.afterRequest = function() {
 	// 每次请求完成关闭加载效果
-	uni.hideLoading()
+	// uni.hideLoading()
 }
 // 导出配置好的请求对象
 export default $http

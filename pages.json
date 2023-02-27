@@ -33,7 +33,7 @@
 			{
 				"path": "Collection/Collection",
 				"style": {
-					"navigationBarTitleText": "我的收藏",
+					"navigationBarTitleText": "我的点赞",
 					"enablePullDownRefresh": false
 				}
 			},
