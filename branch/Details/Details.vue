@@ -606,7 +606,7 @@
 		.pl-comments {
 			width: 100%;
 			display: flex;
-			line-height: 120rpx;
+			line-height: 130rpx;
 
 			.comments-input {
 				flex: 1;
@@ -618,7 +618,7 @@
 			.comments-fb {
 				text-align: center;
 				width: 120rpx;
-				height: 120rpx;
+				height: 130rpx;
 				background-color: #00AEEC;
 				color: #fff;
 			}
