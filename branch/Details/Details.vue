@@ -55,7 +55,7 @@
 				</view>
 			</view>
 			<!-- 评论 -->
-			<view class="content-pl" v-else>
+			<view class="content-pl" v-else @click="cfa">
 				<view class="pl-comments">
 					<view class="comments-input">
 						<input type="text" v-model="text">
@@ -82,25 +82,25 @@
 								</view>
 								<view class="sj3">回复</view>
 							</view> -->
-							<view class="nr-lgm" @click="Replycomments(item.commentId)">{{ item.text }}</view>
+							<view class="nr-lgm" @click.stop="Replycomments(item)">{{ item.text }}</view>
 							<view class="nr-rp">
 								<view class="rp">热议</view>
 								<view class="rp1">UP主觉得很赞</view>
 							</view>
 						</view>
 						<view class="hf-ments" v-if="item.topReply">
-							<view class="ments" v-if="item.topReply && !item.moreShow">
+							<view class="ments" v-if="item.topReply && !state.moreShow">
 								<text class="ments-zm">{{ item.user.nickname }}</text>
 								<text>:</text>
 								<text class="ments-nr">{{ item.topReply.text }}</text>
 							</view>
-							<view class="ments-hf" v-if="item.moreShow">
-								<view v-for="item in item.moreList" :key="item.commentId">
-									<text class="ments-zm">{{ item.user.nickname }}</text>
-									<text class="hf">回复</text>
-									<text class="ments-zm">{{ item.replyUser.nickname }}</text>
+							<view class="ments-hf" v-if="state.moreShow">
+								<view v-for="item1 in item.moreList" :key="item1.commentId">
+									<text class="ments-zm">{{ item1.user.nickname }}</text>
+									<text class="hf" v-if="item1.replyUser">回复</text>
+									<text class="ments-zm" v-if="item1.replyUser">{{ item1.replyUser.nickname }}</text>
 									<text>:</text>
-									<text class="ments-nr">{{ item.text }}</text>
+									<text class="ments-nr"  @click.stop="Replycomments(item, item1.commentId)">{{ item1.text }}</text>
 								</view>
 							</view>
 
@@ -113,13 +113,14 @@
 				<view class="reply-zw" v-if='demandList'>
 					<text>暂时无评论</text>
 				</view>
-				<view class="pl-comments comments" v-if="sum">
-					<view class="comments-input">
-						<input type="text" v-model="comst">
-					</view>
-					<view class="comments-fb" @click="comments">回复</view>
-				</view>
+				
 			</view>
+		</view>
+		<view class="pl-comments comments" v-if="reply.show">
+			<view class="comments-input">
+				<input type="text" v-model="reply.text">
+			</view>
+			<view class="comments-fb" @click="comments">回复</view>
 		</view>
 	</view>
 </template>
@@ -140,19 +141,24 @@
 	} from 'vue';
 	const state = reactive({
 		show: true,
-		sum: false,
 		danmu: false,
 		demandList: {
 		user: {}
 		},
 		text: '',
 		replyId: '',
-		comst: '',
 		appList: {},
 		moreShow: false,
-		moreList: {},
 		dm: ''
 	})
+	
+	const reply = reactive({
+		text: '',
+		replyId: null,
+		show: false,
+		item: {}
+	})
+	
 	import {
 		VideoDetails,
 		getReviews,
@@ -182,14 +188,6 @@
 		})
 		state.demandList = data.data
 	}
-	// 获取回复评论
-	const Reply = async (commentId) => {
-		const {
-			data
-		} = await getReply({
-			commentId
-		})
-	}
 	// 获取评论
 	const Onlinedemand = async (videoId) => {
 		const {
@@ -198,36 +196,42 @@
 			videoId
 		})
 		state.appList = data.data
+		console.log(state.appList)
 	}
 	// 发布回复评论
-	const Replycomments = (replyId) => {
-		state.sum = true
-		state.replyId = replyId
-		Onlinedemand(state.demandList.videoId)
-	}
-	const comments = async () => {
-		const {
-			replyId,
-			comst
-		} = state
-		const text = comst
-		await postReply({
-			replyId,
-			text
-		})
-		state.sum = false
-		state.comst = ''
-		Replycomments(state.replyId)
+	const Replycomments = (item, replyId) => {
+		if(replyId) {
+			reply.replyId = replyId
+		} else {
+			reply.replyId = item.commentId
+		}
+		reply.item = item
+		reply.show = true
+		// Onlinedemand(state.demandList.videoId)
 	}
 	// 更多回复
 	const dianMore = async (item) => {
-		item.moreShow = true
 		const {
 			data
 		} = await getReply({
 			commentId: item.commentId
 		})
 		item.moreList = data.data
+		state.moreShow = true
+	}
+	// 发布回复
+	const comments = async () => {
+		const {
+			replyId,
+			text
+		} = reply
+		await postReply({
+			replyId,
+			text
+		})
+		reply.show = false
+		reply.text = ''
+		dianMore(reply.item)
 	}
 	// 发布评论
 	const publish = async (videoId) => {
@@ -302,10 +306,15 @@
 			})
 			state.dm = ''
 		}
-
+	}
+	const cfa = () => {
+		if (reply.show) {
+			reply.show = false
+		}
 	}
 	// 页面显示
-	onShow(() => {})
+	onShow(() => {
+	})
 
 	// 页面隐藏
 	onHide(() => {
@@ -316,12 +325,11 @@
 	onShareAppMessage(() => {
 
 	})
+	
 	const {
 		show,
 		demandList,
 		text,
-		sum,
-		comst,
 		appList,
 		danmu
 	} = toRefs(state)
