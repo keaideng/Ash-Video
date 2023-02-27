@@ -62,7 +62,7 @@
 					</view>
 					<view class="comments-fb" @click="publish(demandList.videoId)">发布</view>
 				</view>
-				<view class="pl-reply" v-for="item,index in appList" :key="item.commentId" v-if="!item">
+				<view class="pl-reply" v-for="item,index in appList" :key="item.commentId">
 					<view class="reply-tx">
 						<image :src="item.user.avatar" mode=""></image>
 					</view>
@@ -71,7 +71,6 @@
 							<view class="hf-mz">{{item.user.nickname}}</view>
 							<view class="sj1">{{ toDate(item.createdAt) }}</view>
 						</view>
-
 
 						<view class="hf-nr">
 							<!-- <view class="nr-sj">
@@ -88,22 +87,22 @@
 								<view class="rp1">UP主觉得很赞</view>
 							</view>
 						</view>
-						<view class="hf-ments" v-if="item.topReply">
-							<view class="ments" v-if="item.topReply && !state.moreShow">
-								<text class="ments-zm">{{ item.user.nickname }}</text>
-								<text>:</text>
-								<text class="ments-nr">{{ item.topReply.text }}</text>
-							</view>
-							<view class="ments-hf" v-if="state.moreShow">
+						<view class="hf-ments" v-if="item.topReply || item.moreList">
+							<view class="ments-hf" v-if="item.moreList">
 								<view v-for="item1 in item.moreList" :key="item1.commentId">
 									<text class="ments-zm">{{ item1.user.nickname }}</text>
 									<text class="hf" v-if="item1.replyUser">回复</text>
 									<text class="ments-zm" v-if="item1.replyUser">{{ item1.replyUser.nickname }}</text>
 									<text>:</text>
-									<text class="ments-nr"  @click.stop="Replycomments(item, item1.commentId)">{{ item1.text }}</text>
+									<text class="ments-nr"
+										@click.stop="Replycomments(item, item1.commentId)">{{ item1.text }}</text>
 								</view>
 							</view>
-
+							<view class="ments" v-else-if="item.topReply">
+								<text class="ments-zm">{{ item.user.nickname }}</text>
+								<text>:</text>
+								<text class="ments-nr">{{ item.topReply.text }}</text>
+							</view>
 							<view class="more" @click="dianMore(item)" v-if="item.topReply">
 								<txte>更多</txte>
 							</view>
@@ -113,7 +112,7 @@
 				<view class="reply-zw" v-if='demandList'>
 					<text>暂时无评论</text>
 				</view>
-				
+
 			</view>
 		</view>
 		<view class="pl-comments comments" v-if="reply.show">
@@ -143,7 +142,7 @@
 		show: true,
 		danmu: false,
 		demandList: {
-		user: {}
+			user: {}
 		},
 		text: '',
 		replyId: '',
@@ -151,14 +150,14 @@
 		moreShow: false,
 		dm: ''
 	})
-	
+
 	const reply = reactive({
 		text: '',
 		replyId: null,
 		show: false,
 		item: {}
 	})
-	
+
 	import {
 		VideoDetails,
 		getReviews,
@@ -200,14 +199,13 @@
 	}
 	// 发布回复评论
 	const Replycomments = (item, replyId) => {
-		if(replyId) {
+		if (replyId) {
 			reply.replyId = replyId
 		} else {
 			reply.replyId = item.commentId
 		}
 		reply.item = item
 		reply.show = true
-		// Onlinedemand(state.demandList.videoId)
 	}
 	// 更多回复
 	const dianMore = async (item) => {
@@ -217,7 +215,6 @@
 			commentId: item.commentId
 		})
 		item.moreList = data.data
-		state.moreShow = true
 	}
 	// 发布回复
 	const comments = async () => {
@@ -313,8 +310,7 @@
 		}
 	}
 	// 页面显示
-	onShow(() => {
-	})
+	onShow(() => {})
 
 	// 页面隐藏
 	onHide(() => {
@@ -325,7 +321,7 @@
 	onShareAppMessage(() => {
 
 	})
-	
+
 	const {
 		show,
 		demandList,
@@ -555,7 +551,7 @@
 						}
 
 						.hf-ments {
-							
+
 							margin-top: 20rpx;
 							padding: 20rpx;
 							background-color: #f1f1f1;
