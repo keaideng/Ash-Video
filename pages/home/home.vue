@@ -68,6 +68,7 @@
 	})
 	// 页面加载
 	onLoad((message) => {
+		page.pageNumber = 1
 		carousel()
 		Video()
 	})
