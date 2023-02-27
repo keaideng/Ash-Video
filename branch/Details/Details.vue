@@ -473,7 +473,6 @@
 						flex: 1;
 
 						.hf {
-							display: flex;
 							align-items: center;
 
 							.hf-mz {
@@ -548,6 +547,7 @@
 						}
 
 						.hf-ments {
+							
 							margin-top: 20rpx;
 							padding: 20rpx;
 							background-color: #f1f1f1;
