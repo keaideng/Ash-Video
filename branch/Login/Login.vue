@@ -9,7 +9,7 @@
 			<view class="in-bt">欢迎回来</view>
 			<view class="search-nav">
 				<view class="view">
-					<input type="text" placeholder="手机号" v-model="formList.phone" maxlength="11"/>
+					<input type="text" placeholder="手机号" v-model="formList.phone" maxlength="11" />
 				</view>
 			</view>
 			<view class="search-nav">
@@ -57,11 +57,13 @@
 		reactive,
 		toRefs
 	} from 'vue';
-	import { postApi } from '@/api/modules/login.js'
+	import {
+		postApi
+	} from '@/api/modules/login.js'
 	const state = reactive({
 		formList: {
-			phone:'',
-			password:''
+			phone: '',
+			password: ''
 		}
 	})
 	// 跳转注册
@@ -72,39 +74,46 @@
 	}
 	// 封装校验
 	const encapsulation = () => {
-		const { password,phone } = state.formList
+		const {
+			password,
+			phone
+		} = state.formList
 		const sj = /^1[3456789]\d{9}$/
 		if (!phone) {
-			return uni.showToast({
+			uni.showToast({
 				title: '手机号不能为空',
 				icon: 'none'
 			})
 		} else if (!sj.test(phone)) {
-			return uni.showToast({
+			uni.showToast({
 				title: '手机号格式不正确',
 				icon: 'none'
 			})
-		}
-		if (!password) {
-			return uni.showToast({
+		} else if (!password) {
+			uni.showToast({
 				title: '密码不能为空',
 				icon: 'none'
 			})
-		} else if (password.length <= 7) {
-			return uni.showToast({
+		} else if (password.length < 7 || password.length > 16) {
+			uni.showToast({
 				title: '密码长度不能小于8大于16',
 				icon: 'none'
 			})
+		} else {
+			return true
 		}
 	}
 	// 登录
 	const AddList = async () => {
-		encapsulation()
+		const b = encapsulation()
+		if (b) {
 			const res = await postApi(state.formList)
-			if(res.statusCode === 200) {
+			if (res.statusCode === 200) {
 				wx.setStorageSync('authorization', res.data.authorization)
 				// 成功跳转首页
-				uni.switchTab({ url: '/pages/home/home' })
+				uni.switchTab({
+					url: '/pages/home/home'
+				})
 				return uni.showToast({
 					title: '登录成功',
 					icon: 'none'
@@ -115,10 +124,14 @@
 					icon: 'none'
 				})
 			}
+		}
+
 	}
 	// 返回首页
 	const quit = () => {
-		uni.switchTab({ url: '/pages/home/home' })
+		uni.switchTab({
+			url: '/pages/home/home'
+		})
 	}
 	// 页面加载
 	onLoad((message) => {
@@ -139,7 +152,9 @@
 	onShareAppMessage(() => {
 
 	})
-	const { formList } = toRefs(state)
+	const {
+		formList
+	} = toRefs(state)
 </script>
 
 <style lang="scss">

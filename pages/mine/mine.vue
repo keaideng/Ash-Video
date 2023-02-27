@@ -70,8 +70,8 @@
 		<view class="pg" @click="wdzp('/branch/addvideo/addvideo')">
 			<button>立即投稿</button>
 		</view>
-		<view class="tuichu" v-if="userInfo.nickname">
-			<text @click="quit">退出登录</text>
+		<view class="tuichu" v-if="userInfo.nickname" @click="quit">
+			<text >退出登录</text>
 		</view>
 	</view>
 </template>

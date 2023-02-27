@@ -109,7 +109,9 @@
 				clearInterval(id)
 			}
 		}, 1000)
-		const { data } = await CaptchaApi(state.ListAdd.phone)
+		const {
+			data
+		} = await CaptchaApi(state.ListAdd.phone)
 		console.log(data.code)
 		// state.ListAdd.code = res.data.code
 	}
@@ -124,38 +126,37 @@
 		const sj = /^1[3456789]\d{9}$/
 		// 判断不能为空
 		if (!nickname) {
-			return uni.showToast({
+			uni.showToast({
 				title: '昵称不能为空',
 				icon: 'none'
 			})
-		} else if (nickname.length <= 1) {
-			return uni.showToast({
+		} else if (nickname.length < 1 || nickname.length > 16) {
+			uni.showToast({
 				title: '昵称长度不能小于2大于16',
 				icon: 'none'
 			})
-		}
-		if (!phone) {
-			return uni.showToast({
+		} else if (!phone) {
+			uni.showToast({
 				title: '手机号不能为空',
 				icon: 'none'
 			})
 		} else if (!sj.test(phone)) {
-			return uni.showToast({
+			uni.showToast({
 				title: '手机号格式不正确',
 				icon: 'none'
 			})
-		}
-		if (!code) return uni.showToast({
-			title: '验证码不能为空',
-			icon: 'none'
-		})
-		if (!password) {
-			return uni.showToast({
+		} else if (!code) {
+			 uni.showToast({
+				title: '验证码不能为空',
+				icon: 'none'
+			})
+		} else if (!password) {
+			uni.showToast({
 				title: '密码不能为空',
 				icon: 'none'
 			})
-		} else if (password.length <= 7) {
-			return uni.showToast({
+		} else if (password.length < 7 || password.length > 16) {
+			uni.showToast({
 				title: '密码长度不能小于8大于16',
 				icon: 'none'
 			})
@@ -165,19 +166,18 @@
 	}
 	// 注册 
 	const LoginAdd = async () => {
-		if (encapsulation()) {
-			const { statusCode } = await loginApi(state.ListAdd)
+		const b = encapsulation()
+		if (b) {
+			console.log(11)
+			const {
+				statusCode
+			} = await loginApi(state.ListAdd)
 			if (statusCode === 200) {
 				uni.navigateTo({
 					url: '/branch/Login/Login',
 				})
-				return uni.showToast({
+				uni.showToast({
 					title: '注册成功',
-					icon: 'none'
-				})
-			} else {
-				return uni.showToast({
-					title: '注册失败',
 					icon: 'none'
 				})
 			}
