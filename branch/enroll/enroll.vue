@@ -159,12 +159,13 @@
 				title: '密码长度不能小于8大于16',
 				icon: 'none'
 			})
+		} else {
+			return true
 		}
 	}
 	// 注册 
 	const LoginAdd = async () => {
-		encapsulation()
-		if (state.ListAdd) {
+		if (encapsulation()) {
 			const { statusCode } = await loginApi(state.ListAdd)
 			if (statusCode === 200) {
 				uni.navigateTo({

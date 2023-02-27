@@ -121,6 +121,11 @@
 	const adelete = async (videoId) => {
 		await Delete({videoId})
 		getWork()
+		return uni.showToast({
+			title: '删除成功',
+			icon: 'none'
+		})
+		
 	}
 	// 页面隐藏
 	onHide(() => {
