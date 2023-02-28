@@ -73,13 +73,8 @@
 
 	// 页面加载
 	onLoad((message) => {
-		state.addList.keyWord = message.name
-		if(message.name) {
-			search()
-			
-		} else {
-			state.firstFocus = true
-		}
+		if(message.name) state.addList.keyWord = message.name
+		
 	})
 	const search = async () => {
 		const {
@@ -95,6 +90,11 @@
 	}
 	// 页面显
 	onShow(() => {
+		if(state.addList.keyWord) {
+			search()
+		} else {
+			state.firstFocus = true
+		}
 	})
 
 	// 页面隐藏
