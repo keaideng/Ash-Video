@@ -22,7 +22,7 @@
 					<text>我的作品</text>
 				</view>
 				<view class="item1">
-					<text>{{userInfo.videoCount}}个</text>
+					<text v-if='userInfo.videoCount'>{{userInfo.videoCount}}个</text>
 					<image src="../../static/yjt.png" mode=""></image>
 				</view>
 				
@@ -113,7 +113,7 @@ const getUserAdd = async () => {
 
 const quit = () => {
 	wx.clearStorage()
-	userInfo.avatar = ''
+	userInfo= {}
 	getUserAdd()
 }
 

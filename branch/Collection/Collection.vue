@@ -86,7 +86,8 @@
 			lock.value = true
 			return
 		}
-		WorkList.value.push(...data.data)
+		console.log(data.data)
+		ListHistory.value.push(...data.data)
 	}
 	const zha = (videoId) => {
 		uni.navigateTo({

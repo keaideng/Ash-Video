@@ -86,7 +86,7 @@
 			lock.value = true
 			return
 		}
-		WorkList.value.push(...data.data)
+		ListHistory.value.push(...data.data)
 	}
 	// 页面显示
 	onShow(() => {
