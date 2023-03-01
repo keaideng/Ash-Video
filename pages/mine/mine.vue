@@ -43,7 +43,7 @@
 					<text>我的关注</text>
 				</view>
 				<view class="item1">
-					<text>0</text>
+					<text></text>
 					<image src="../../static/yjt.png" mode=""></image>
 				</view>
 				
@@ -112,9 +112,11 @@ const getUserAdd = async () => {
 }
 
 const quit = () => {
+	userInfo.nickname = ''
+	userInfo.avatar = ''
+	userInfo.signature = ''
+	userInfo.videoCount = ''
 	wx.clearStorage()
-	userInfo= {}
-	getUserAdd()
 }
 
 // 页面加载
